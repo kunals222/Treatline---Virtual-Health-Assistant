@@ -4,6 +4,32 @@ import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../redux/slices/authSlice';
 import '../styles/DoctorRegistration.css';
 
+const specialists = [
+    'Psychiatrist', 'ENT Specialist', 'Endocrinologist', 'Urologist',
+    'Toxicologist', 'Gynecologist', 'Orthopedic Surgeon', 'Dentist',
+    'Ophthalmologist', 'Neurologist', 'Pediatric Surgeon',
+    'Cardiologist', 'Nephrologist', 'Pain Management Specialist',
+    'Obstetrician', 'Oncologist', 'Pulmonologist', 'Traumatologist',
+    'Gastroenterologist', 'Hepatologist', 'Rheumatologist',
+    'Geneticist', 'General Surgeon', 'Vascular Surgeon',
+    'Infectious Disease Specialist', 'Pediatrician', 'Podiatrist',
+    'Dermatologist', 'Hematologist', 'Nutritionist',
+    'Sleep Medicine Specialist', 'General Practitioner',
+    'Oral Surgeon', 'Emergency Medicine Specialist',
+    'ENT SpecialistOt', 'Allergist', 'Addiction Specialist',
+    'Psychologist', 'Developmental Pediatrician', 'Trauma Surgeon',
+    'Wound Care Specialist', 'Otolaryngologist',
+    'Pediatric Pulmonologist', 'Immunologist', 'Vascular specialist',
+    'Infectious disease specialist', 'Orthopedic specialist',
+    'Oral surgeon', 'Plastic surgeon', 'General surgeon',
+    'Emergency medicine specialist', 'Obstetrician-Gynecologist',
+    'Vascular surgeon', 'Neurosurgeon', 'Proctologist',
+    'ENT specialist', 'Burn specialist',
+    'Oral and maxillofacial surgeon', 'medical oncologist',
+    'Orthopedic Specialist', 'infectious disease specialists.',
+    'General Physician'
+];
+
 const DoctorRegistration = () => {
     const [formData, setFormData] = useState({
         name: '',
@@ -17,7 +43,13 @@ const DoctorRegistration = () => {
         profile_image: null,
         certificates: [],
         medical_license: null,
+        specialist: '', // Add specialist to formData
     });
+
+    const [filteredSpecialists, setFilteredSpecialists] = useState(specialists);
+    const [selectedSpecialist, setSelectedSpecialist] = useState('');
+    const [showDropdown, setShowDropdown] = useState(false); // State to control dropdown visibility
+    const [specialistError, setSpecialistError] = useState(''); // State to handle specialist error
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -47,8 +79,34 @@ const DoctorRegistration = () => {
         }
     };
 
+    const handleSpecialistChange = (e) => {
+        const value = e.target.value;
+        setSelectedSpecialist(value);
+        setFilteredSpecialists(specialists.filter(specialist => specialist.toLowerCase().includes(value.toLowerCase())));
+        setShowDropdown(true); // Show dropdown when typing
+        setSpecialistError(''); // Clear error when typing
+    };
+
+    const handleSpecialistSelect = (specialist) => {
+        setSelectedSpecialist(specialist);
+        setFilteredSpecialists([]);
+        setShowDropdown(false); // Hide dropdown when an option is selected
+        setFormData({
+            ...formData,
+            specialist, // Update formData with selected specialist
+        });
+
+        console.log(specialist);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Validate specialist
+        if (!specialists.includes(selectedSpecialist)) {
+            setSpecialistError('Please select a valid specialist from the list.');
+            return;
+        }
 
         // Prepare form data for file upload
         const data = new FormData();
@@ -60,6 +118,7 @@ const DoctorRegistration = () => {
         data.append('experience', formData.experience);
         data.append('phone', formData.phone);
         data.append('medical_registration_id', formData.medical_registration_id);
+        data.append('specialist', selectedSpecialist); // Add specialist to form data
         
         // Profile Image
         if (formData.profile_image) {
@@ -134,6 +193,32 @@ const DoctorRegistration = () => {
                         onChange={handleInputChange}
                         required
                     />
+
+                    <label htmlFor="specialist">Specialist</label>
+                    <div className="specialist-dropdown">
+                        <input
+                            type="text"
+                            id="specialist"
+                            name="specialist"
+                            value={selectedSpecialist}
+                            placeholder="Enter speciality"
+                            onChange={handleSpecialistChange}
+                            onFocus={() => setShowDropdown(true)} // Show dropdown on focus
+                            onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Hide dropdown on blur with delay
+                            autoComplete="off"
+                            required
+                        />
+                        {showDropdown && (
+                            <ul>
+                                {filteredSpecialists.map((specialist, index) => (
+                                    <li key={index} onClick={() => handleSpecialistSelect(specialist)}>
+                                        {specialist}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
+                    {specialistError && <p className="error">{specialistError}</p>}
 
                     <label htmlFor="languages">Languages</label>
                     <input

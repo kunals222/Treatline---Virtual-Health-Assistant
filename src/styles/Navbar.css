@@ -39,18 +39,24 @@
 .links {
     display: flex;
     gap: 1.25rem;
+    align-items: center;
 }
 
-.links a {
+.links a, .logout-button {
     color: white;
     text-decoration: none;
     font-size: 1rem;
     transition: color 0.3s ease;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 5px;
 }
 
-.links a:hover {
+.links a:hover, .logout-button:hover {
     color: var(--background-color);
-    text-decoration: underline;
+    background-color: rgba(255, 255, 255, 0.2); /* Light background on hover */
 }
 
 .navbar-toggle {
@@ -92,7 +98,7 @@
         max-height: 500px; /* Adjust this value based on the content height */
     }
 
-    .links a {
+    .links a, .logout-button {
         padding: 10px 0;
         width: 100%;
         text-align: center;
@@ -100,7 +106,7 @@
         animation: slideDown 0.5s forwards;
     }
 
-    .links.open a {
+    .links.open a, .links.open .logout-button {
         animation-delay: calc(var(--order) * 0.1s);
     }
 

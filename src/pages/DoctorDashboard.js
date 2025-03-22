@@ -22,9 +22,8 @@ const DoctorDashboard = () => {
     ];
 
     useEffect(() => {
-        // dispatch(fetchDoctorProfile());
+        dispatch(fetchDoctorProfile());
         dispatch(fetchAppointments());
-        console.log("kunal");
     }, [dispatch]);
 
     useEffect(() => {
@@ -50,10 +49,10 @@ const DoctorDashboard = () => {
     return (
         <div className="dashboard">
             <div className="sidebar">
-                <button onClick={() => setActiveSection('scheduled')}>Scheduled Appointments</button>
-                <button onClick={() => setActiveSection('history')}>History</button>
-                <button onClick={() => setActiveSection('availability')}>Set Availability</button>
-                <button onClick={() => setActiveSection('profile')}>Profile</button>
+                <button onClick={() => setActiveSection('scheduled')}>Upcoming Appointments</button>
+                <button onClick={() => setActiveSection('history')}>Appointment History</button>
+                <button onClick={() => setActiveSection('availability')}>Manage Availability</button>
+                <button onClick={() => setActiveSection('profile')}>Doctor Profile</button>
             </div>
             <div className="content">
                 {activeSection === 'scheduled' && (
@@ -61,14 +60,25 @@ const DoctorDashboard = () => {
                         {currentAppointments?.map((appt, index) => (
                             <div className="appointment-card" key={index}>
                                 <h3>{appt.patient}</h3>
-                                <p>Time: </p>
-                                
-                                <p>Start: {new Date(appt.start).toLocaleString()}</p>
-                                <p>End: {new Date(appt.end).toLocaleString()}</p>
-                                
-                                <p>Symptoms: {appt.symptoms}</p>
-                                <p>Notes: {appt.notes}</p>
-                                
+                                <div className="appointment-time">
+                                    <span>Start: {new Date(appt.start).toLocaleString()}</span>
+                                    <span>End: {new Date(appt.end).toLocaleString()}</span>
+                                </div>
+                                <div className="appointment-details">
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <td className="label">💉 Symptoms:</td>
+                                                <td>{appt.symptoms}</td>
+                                            </tr>
+                                            <tr>
+                                                <td className="label">📝 Notes:</td>
+                                                <td>{appt.notes}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button className="join-meeting-button">Join Meeting</button>
                             </div>
                         ))}
                     </div>
@@ -98,30 +108,40 @@ const DoctorDashboard = () => {
                 {activeSection === 'availability' && (
                     <div className="availability">
                         <h3>Select Available Time Slots:</h3>
-                        <div className="slot-checkboxes">
-                            {timeSlots.map((slot, index) => (
-                                <label key={index} className="slot-label">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedSlots.includes(slot)}
-                                        onChange={() => handleCheckboxChange(slot)}
-                                    />
-                                    {slot}
-                                </label>
-                            ))}
-                        </div>
-                        <button onClick={handleScheduleUpdate}>Update Schedule</button>
-                        <h4>Current Schedule:</h4>
-                        <ul className="schedule-list">
-                            {selectedSlots.length > 0 ? (
-                                selectedSlots.map((slot, index) => (
-                                    <li key={index}>{slot}</li>
-                                ))
-                            ) : (
-                                <li>No slots selected</li>
-                            )}
-                        </ul>
-                    </div>
+                        <table className="slot-checkboxes">
+                            <tbody>
+                                {Array.from({ length: 4 }).map((_, rowIndex) => (
+                                    <tr key={rowIndex}>
+                                        {timeSlots.slice(rowIndex * 2, rowIndex * 2 + 2).map((slot, index) => (
+                                            <td
+                                                key={index}
+                                                className={`slot-label ${selectedSlots.includes(slot) ? 'selected' : ''}`}
+                                                onClick={() => handleCheckboxChange(slot)}
+                                                style={{
+                                                    backgroundColor: selectedSlots.includes(slot)
+                                                        ? user?.time_slot[timeSlots.indexOf(slot)] === 1
+                                                            ? '#28a745' // Green for initially selected slots
+                                                            : '#ccffcc' // Light green for selected slots
+                                                        : user?.time_slot[timeSlots.indexOf(slot)] === 1
+                                                        ? '#ffcccc' // Light red for newly deselected slots
+                                                        : '#ecf0f1' // Default light grey
+                                                }}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedSlots.includes(slot)}
+                                                    onChange={() => handleCheckboxChange(slot)}
+                                                    style={{ display: 'none' }}
+                                                />
+                                                {slot}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        <button className="update-schedule-button" onClick={handleScheduleUpdate}>Update Schedule</button>
+                                            </div>
                 )}
                 {activeSection === 'profile' && <Profile profile={user} />}
             </div>

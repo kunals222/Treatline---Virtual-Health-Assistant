@@ -18,6 +18,9 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, 
 // Register user with file upload support
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
   try {
+
+    // console.log(userData);
+    // console.log("registering user");
     const response = await api.post('/doctors/register', userData, {
       headers: {
         'Content-Type': 'multipart/form-data', // To handle file uploads
@@ -30,6 +33,8 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
     localStorage.setItem('userInfo', JSON.stringify(user));
     setAuthToken(token);
     return { token, user };
+
+    
   } catch (err) {
     return rejectWithValue(err.response.data);
   }
@@ -82,7 +87,7 @@ export const fetchDoctorProfile = createAsyncThunk('auth/fetchDoctorProfile', as
 
 export const updateDoctorSchedule = createAsyncThunk('auth/updateDoctorSchedule', async (timeSlot, { rejectWithValue }) => {
   try {
-    console.log(timeSlot);
+    // console.log(timeSlot);
       const response = await api.put('/doctors/updateSchedule', {timeSlot});
       
       return response.data;

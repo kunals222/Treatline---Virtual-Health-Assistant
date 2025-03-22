@@ -19,7 +19,7 @@ const Navbar = () => {
 
     const handleLogout = () => {
         dispatch(logout());
-        // navigate('/login');
+        navigate('/login');
     };
 
     return (
@@ -33,8 +33,8 @@ const Navbar = () => {
             </button>
             <div className={`links ${isOpen ? 'open' : ''}`}>
                 <a href="/#home">Home</a>
-                <a href="/#about">About Us</a>
-                <a href="/#contact">Contact Us</a>
+                <a href="/#about">About</a>
+                <a href="/#contact">Contact</a>
                 {token ? (
                     <>
                         <Link to="/dashboard">Dashboard</Link>

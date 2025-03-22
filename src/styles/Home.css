@@ -1,8 +1,8 @@
 :root {
-    --primary-color: #007bff;
-    --secondary-color: #28a745;
-    --background-color: #f4f4f4;
-    --text-color: #ffffff;
+    --primary-color: #007bff; /* Blue color */
+    --secondary-color: #28a745; /* Green color */
+    --background-color: #f4f4f4; /* Light grey background */
+    --text-color: #ffffff; /* White text color */
     --font-family: Arial, sans-serif;
 }
 
@@ -30,7 +30,7 @@ body {
 }
 
 .home-content {
-    background: rgb(186 156 237 / 70%); /* Darker semi-transparent background */
+    background: rgba(0, 123, 255, 0.7); /* Blue semi-transparent background */
     backdrop-filter: blur(10px); /* Background blur for glassmorphism effect */
     -webkit-backdrop-filter: blur(10px); /* Safari support */
     border: 1px solid rgba(255, 255, 255, 0.3); /* Border for glassmorphism effect */
@@ -46,17 +46,17 @@ body {
 
 .home h1 {
     font-size: 2.5rem;
-    color: yellow; /* Light text color */
+    color: #ffffff; /* White text color */
 }
 
 .home h2 {
     font-size: 2rem;
-    color: rgba(246, 255, 0, 0.651); /* Light text color */
+    color: #d4edda; /* Light green text color */
 }
 
 .home p {
     font-size: 1.2rem;
-    color: rgb(255, 255, 255); /* Light text color */
+    color: #f8f9fa; /* Light grey text color */
     margin-bottom: 20px;
     line-height: 1.6;
 }

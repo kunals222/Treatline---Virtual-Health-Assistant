@@ -2,19 +2,21 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #f4f7f6; /* Light grey background */
 }
 
 .dashboard {
     display: flex;
     height: 100vh; /* Full viewport height */
     overflow: hidden;
+    background-color: #f4f7f6; /* Light grey background */
 }
 
 .sidebar {
     width: 250px;
-    background-color: #333;
-    color: #fff;
+    background-color: #2c3e50; 
+    /* background-color: #879ee6; */
+    color: #ecf0f1; /* Light text color */
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -23,18 +25,19 @@ body {
 }
 
 .sidebar button {
-    background-color: #555;
-    color: #fff;
-    margin: 5px 0;
+    background-color: #3498db; /* Blue button */
+    color: #ecf0f1; /* Light text color */
+    margin: 10px 0;
     padding: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
     transition: background-color 0.3s;
 }
 
 .sidebar button:hover {
-    background-color: #777;
+    background-color: #2980b9; /* Darker blue on hover */
 }
 
 .content {
@@ -44,12 +47,103 @@ body {
     overflow-y: auto; /* Independent scroll */
 }
 
+.appointments, .history-table, .availability {
+    background-color: #ffffff; /* White background for content */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.appointments {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 .appointment-card {
-    background-color: #e3e3e3;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #ffffff; /* White background for content */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    transition: transform 0.3s ease;
+}
+
+.appointment-card:hover {
+    transform: translateY(-5px);
+}
+
+.appointment-card h3 {
+    margin-top: 0;
+    color: #2c3e50; /* Dark blue text */
+}
+
+.appointment-card p {
+    margin: 5px 0;
+    color: #34495e; /* Dark grey text */
+}
+
+.appointment-time {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #ecf0f1; /* Light grey background */
+    padding: 10px;
+    border-radius: 5px;
+    color: #2c3e50; /* Dark blue text */
+    gap: 20px; /* Add gap between start and end times */
+}
+
+.appointment-time span {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Add gap between icon and text */
+}
+
+.appointment-time span::before {
+    content: '⏰'; /* Clock symbol */
+    font-size: 1.2rem;
+    color: #3498db; /* Blue color for the icon */
+}
+
+.appointment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.appointment-details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.appointment-details td {
+    padding: 10px;
+    border: 1px solid #bdc3c7; /* Light grey border */
+}
+
+.appointment-details .label {
+    font-weight: bold;
+    color: #2c3e50; /* Dark blue text */
+}
+
+.join-meeting-button {
+    background-color: #28a745; /* Green button */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+}
+
+.join-meeting-button:hover {
+    background-color: #218838; /* Darker green on hover */
 }
 
 .history-table {
@@ -60,49 +154,88 @@ body {
 
 .history-table th, .history-table td {
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #bdc3c7; /* Light grey border */
     text-align: left;
 }
 
 .history-table th {
-    background-color: #f1f1f1;
+    background-color: #3498db; /* Blue header */
+    color: #ecf0f1; /* Light text color */
 }
 
-.availability {
-    margin: 20px 0;
+.history-table tr:nth-child(even) {
+    background-color: #ecf0f1; /* Light grey alternate rows */
 }
 
 .slot-checkboxes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px; /* Add space below checkboxes */
 }
 
-.slot-label {
-    background-color: #e3e3e3;
-    padding: 8px;
+.slot-checkboxes td {
+    background-color: #ecf0f1; /* Light grey background */
+    padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
+    color: #2c3e50; /* Dark blue text */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* Add gap between checkbox and label */
+    transition: background-color 0.3s, transform 0.3s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border: 1px solid #bdc3c7; /* Light grey border */
+}
+
+.slot-checkboxes td.selected {
+    background-color: #28a745; /* Green background when selected */
+    color: #fff; /* White text when selected */
+}
+
+.slot-checkboxes td:hover {
+    background-color: #d0e1e8; /* Slightly darker grey on hover */
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.slot-checkboxes input {
+    display: none; /* Hide the actual checkbox */
 }
 
 .schedule-list {
-    margin: 15px 0;
+    list-style-type: none;
     padding: 0;
-    list-style: none;
+    margin: 0;
 }
 
-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
+.schedule-list li {
+    background-color: #ecf0f1; /* Light grey list item background */
+    padding: 10px;
+    margin-bottom: 5px;
     border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    color: #2c3e50; /* Dark blue text */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    transition: transform 0.3s;
 }
 
-button:hover {
-    background-color: #0056b3;
+.schedule-list li:hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.update-schedule-button {
+    background-color: #3498db; /* Blue button */
+    color: #ecf0f1; /* Light text color */
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    width: 100%; /* Make the button full width */
+}
+
+.update-schedule-button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
 }
 
 /* Profile Section */
@@ -132,6 +265,7 @@ button:hover {
     margin: 0;
     font-size: 24px;
     font-weight: bold;
+    color: #2c3e50; /* Dark blue text */
 }
 
 .profile-section-email {
@@ -149,7 +283,7 @@ button:hover {
     border-radius: 50%;
     object-fit: cover;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border: 2px solid #007bff;
+    border: 2px solid #3498db; /* Blue border */
 }
 
 .profile-section-details {
@@ -158,10 +292,11 @@ button:hover {
 
 .profile-section-details p {
     margin: 5px 0;
+    color: #34495e; /* Dark grey text */
 }
 
 .edit-button {
-    background-color: #28a745;
+    background-color: #28a745; /* Green button */
     color: #fff;
     margin-top: 10px;
     padding: 8px 16px;
@@ -172,11 +307,11 @@ button:hover {
 }
 
 .edit-button:hover {
-    background-color: #218838;
+    background-color: #218838; /* Darker green on hover */
 }
 
 .save-button {
-    background-color: #007bff;
+    background-color: #3498db; /* Blue button */
     color: #fff;
     margin-top: 10px;
     padding: 8px 16px;
@@ -187,11 +322,11 @@ button:hover {
 }
 
 .save-button:hover {
-    background-color: #0056b3;
+    background-color: #2980b9; /* Darker blue on hover */
 }
 
 .cancel-button {
-    background-color: #dc3545;
+    background-color: #dc3545; /* Red button */
     color: #fff;
     margin-top: 10px;
     padding: 8px 16px;
@@ -202,5 +337,5 @@ button:hover {
 }
 
 .cancel-button:hover {
-    background-color: #c82333;
+    background-color: #c82333; /* Darker red on hover */
 }
