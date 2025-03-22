@@ -1,0 +1,90 @@
+:root {
+    --primary-color: #007bff;
+    --secondary-color: #28a745;
+    --background-color: #f4f4f4;
+    --text-color: #ffffff;
+    --font-family: Arial, sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    margin: 0;
+    padding: 0;
+    background-color: var(--background-color);
+}
+
+.home {
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)), url('../assets/slide/slide-1.jpg');
+    background-blend-mode: overlay;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    color: var(--text-color);
+    position: relative;
+    min-height: 100vh; /* Ensure the home section takes full viewport height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-content {
+    background: rgb(186 156 237 / 70%); /* Darker semi-transparent background */
+    backdrop-filter: blur(10px); /* Background blur for glassmorphism effect */
+    -webkit-backdrop-filter: blur(10px); /* Safari support */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Border for glassmorphism effect */
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.home h1, .home h2 {
+    margin: 10px 0;
+}
+
+.home h1 {
+    font-size: 2.5rem;
+    color: yellow; /* Light text color */
+}
+
+.home h2 {
+    font-size: 2rem;
+    color: rgba(246, 255, 0, 0.651); /* Light text color */
+}
+
+.home p {
+    font-size: 1.2rem;
+    color: rgb(255, 255, 255); /* Light text color */
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .home h1 {
+        font-size: 2rem;
+    }
+
+    .home h2 {
+        font-size: 1.5rem;
+    }
+
+    .home p {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .home h1 {
+        font-size: 1.5rem;
+    }
+
+    .home h2 {
+        font-size: 1.25rem;
+    }
+
+    .home p {
+        font-size: 0.9rem;
+    }
+}

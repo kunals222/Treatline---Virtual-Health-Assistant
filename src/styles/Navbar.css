@@ -1,0 +1,131 @@
+:root {
+    --primary-color: #007bff; /* A soothing blue color */
+    --secondary-color: #28a745; /* A calming green color */
+    --background-color: #f4f4f4;
+    --text-color: #555;
+    --font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); /* Gradient background */
+    color: white;
+    display: flex;
+    justify-content: space-between; /* Adjusted to space-between for desktop view */
+    align-items: center;
+    padding: 15px 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+    position: sticky; /* Make the navbar sticky */
+    top: 0; /* Position it at the top */
+    z-index: 1000; /* Ensure it is on top of other content */
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-right: auto; /* Align logo to the left */
+}
+
+.logo img {
+    height: 2rem; /* Smaller height for the logo */
+    margin-right: 0.5rem; /* Space between logo and title */
+}
+
+.logo h1 {
+    font-size: 1.5rem; /* Adjusted font size for better compatibility */
+    margin: 0;
+}
+
+.links {
+    display: flex;
+    gap: 1.25rem;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.links a:hover {
+    color: var(--background-color);
+    text-decoration: underline;
+}
+
+.navbar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    position: absolute;
+    top: 15px;
+    right: 30px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center; /* Center the content vertically */
+    }
+
+    .navbar-toggle {
+        display: block;
+    }
+
+    .links {
+        display: flex;
+        flex-direction: column;
+        align-items: center; /* Center the links */
+        width: 100%;
+        margin-top: 10px;
+        transition: max-height 0.5s ease-out; /* Add transition for sliding effect */
+        overflow: hidden; /* Hide overflowing content */
+        max-height: 0; /* Initially hide the links */
+    }
+
+    .links.open {
+        max-height: 500px; /* Adjust this value based on the content height */
+    }
+
+    .links a {
+        padding: 10px 0;
+        width: 100%;
+        text-align: center;
+        opacity: 0;
+        animation: slideDown 0.5s forwards;
+    }
+
+    .links.open a {
+        animation-delay: calc(var(--order) * 0.1s);
+    }
+
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .logo img {
+        height: 1.5rem; /* Smaller height for the logo on small screens */
+    }
+
+    .logo h1 {
+        font-size: 1.25rem; /* Smaller font size for the title on small screens */
+    }
+
+    .navbar-toggle {
+        font-size: 1.25rem; /* Smaller font size for the toggle button on small screens */
+    }
+}
