@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo1.png';
 import '../styles/Navbar.css';
 import { useNavigate } from 'react-router-dom';
 
