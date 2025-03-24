@@ -6,7 +6,7 @@ import appointmentReducer from './slices/appointmentSlice';
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    appointment: appointmentReducer,
+    appointments : appointmentReducer,
   },
 });
 

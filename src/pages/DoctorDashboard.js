@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import '../styles/DoctorDashboard.css';
 import Profile from '../pages/Profile.js';
+import PatientProfile from './PatientProfile.js';
+import BookAppointment from './BookAppointment.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDoctorProfile, updateDoctorSchedule, fetchAppointments } from '../redux/slices/authSlice';
+import { fetchDoctorProfile, updateDoctorSchedule, fetchAppointments, fetchPatientDetails } from '../redux/slices/authSlice';
 
 const DoctorDashboard = () => {
     const [activeSection, setActiveSection] = useState('scheduled');
     const dispatch = useDispatch();
-    const { user, loading, error, pastAppointments, currentAppointments } = useSelector((state) => state.auth);
+    const { user, loading, error, pastAppointments, currentAppointments, role } = useSelector((state) => state.auth);
     const [selectedSlots, setSelectedSlots] = useState([]);
 
     const timeSlots = [
@@ -22,9 +24,13 @@ const DoctorDashboard = () => {
     ];
 
     useEffect(() => {
-        dispatch(fetchDoctorProfile());
-        dispatch(fetchAppointments());
-    }, [dispatch]);
+        if (role === 'doctor') {
+            dispatch(fetchDoctorProfile());
+            dispatch(fetchAppointments());
+        } else if (role === 'patient') {
+            dispatch(fetchPatientDetails());
+        }
+    }, [dispatch, role]);
 
     useEffect(() => {
         if (user?.time_slot) {
@@ -49,17 +55,28 @@ const DoctorDashboard = () => {
     return (
         <div className="dashboard">
             <div className="sidebar">
-                <button onClick={() => setActiveSection('scheduled')}>Upcoming Appointments</button>
-                <button onClick={() => setActiveSection('history')}>Appointment History</button>
-                <button onClick={() => setActiveSection('availability')}>Manage Availability</button>
-                <button onClick={() => setActiveSection('profile')}>Doctor Profile</button>
+                {role === 'doctor' && (
+                    <>
+                        <button onClick={() => setActiveSection('scheduled')}>Upcoming Appointments</button>
+                        <button onClick={() => setActiveSection('history')}>Appointment History</button>
+                        <button onClick={() => setActiveSection('availability')}>Manage Availability</button>
+                        <button onClick={() => setActiveSection('profile')}>Doctor Profile</button>
+                    </>
+                )}
+                {role === 'patient' && (
+                    <>
+                        <button onClick={() => setActiveSection('profile')}>Profile</button>
+                        <button onClick={() => setActiveSection('makeAppointment')}>Book Appointment</button>
+                        <button onClick={() => setActiveSection('history')}>Appointment History</button>
+                    </>
+                )}
             </div>
             <div className="content">
-                {activeSection === 'scheduled' && (
+                {role === 'doctor' && activeSection === 'scheduled' && (
                     <div className="appointments">
                         {currentAppointments?.map((appt, index) => (
                             <div className="appointment-card" key={index}>
-                                <h3>{appt.patient}</h3>
+                                <h3>{appt.patientName}</h3>
                                 <div className="appointment-time">
                                     <span>Start: {new Date(appt.start).toLocaleString()}</span>
                                     <span>End: {new Date(appt.end).toLocaleString()}</span>
@@ -83,7 +100,7 @@ const DoctorDashboard = () => {
                         ))}
                     </div>
                 )}
-                {activeSection === 'history' && (
+                {role === 'doctor' && activeSection === 'history' && (
                     <table className="history-table">
                         <thead>
                             <tr>
@@ -96,7 +113,7 @@ const DoctorDashboard = () => {
                         <tbody>
                             {pastAppointments?.map((record, index) => (
                                 <tr key={index}>
-                                    <td>{record.patient}</td>
+                                    <td>{record.patientName}</td>
                                     <td>{record.symptoms}</td>
                                     <td>{new Date(record.start).toLocaleDateString()}</td>
                                     <td>{record.notes}</td>
@@ -105,7 +122,7 @@ const DoctorDashboard = () => {
                         </tbody>
                     </table>
                 )}
-                {activeSection === 'availability' && (
+                {role === 'doctor' && activeSection === 'availability' && (
                     <div className="availability">
                         <h3>Select Available Time Slots:</h3>
                         <table className="slot-checkboxes">
@@ -141,9 +158,38 @@ const DoctorDashboard = () => {
                             </tbody>
                         </table>
                         <button className="update-schedule-button" onClick={handleScheduleUpdate}>Update Schedule</button>
-                                            </div>
+                    </div>
                 )}
-                {activeSection === 'profile' && <Profile profile={user} />}
+                {role === 'doctor' && activeSection === 'profile' && <Profile />}
+                {role === 'patient' && activeSection === 'profile' && <PatientProfile />}
+
+                {role === 'patient' && activeSection === 'makeAppointment' && (
+                    <div className="make-appointment">
+                        <BookAppointment />
+                    </div>
+                )}
+                {role === 'patient' && activeSection === 'history' && (
+                    <table className="history-table">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Symptoms</th>
+                                <th>Date</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {pastAppointments?.map((record, index) => (
+                                <tr key={index}>
+                                    <td>{record.doctor}</td>
+                                    <td>{record.symptoms}</td>
+                                    <td>{new Date(record.start).toLocaleDateString()}</td>
+                                    <td>{record.notes}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                )}
             </div>
         </div>
     );

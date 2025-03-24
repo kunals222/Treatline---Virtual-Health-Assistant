@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
 import logo from '../assets/logo1.png';
 import '../styles/Navbar.css';
-import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -20,6 +20,19 @@ const Navbar = () => {
     const handleLogout = () => {
         dispatch(logout());
         navigate('/login');
+    };
+
+    const handleRegisterClick = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
+
+    const handleRegisterOptionClick = (role) => {
+        if (role === 'doctor') {
+            navigate('/register/doctor');
+        } else if (role === 'patient') {
+            navigate('/register/patient');
+        }
+        setIsDropdownOpen(false);
     };
 
     return (
@@ -42,7 +55,15 @@ const Navbar = () => {
                     </>
                 ) : (
                     <>
-                        <Link to="/register">Register</Link>
+                        <div className="register-dropdown">
+                            <button onClick={handleRegisterClick}>Register</button>
+                            {isDropdownOpen && (
+                                <div className="dropdown-menu">
+                                    <button onClick={() => handleRegisterOptionClick('doctor')}>Doctor</button>
+                                    <button onClick={() => handleRegisterOptionClick('patient')}>Patient</button>
+                                </div>
+                            )}
+                        </div>
                         <Link to="/login">Login</Link>
                     </>
                 )}

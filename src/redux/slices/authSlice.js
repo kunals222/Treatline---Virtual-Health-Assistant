@@ -4,12 +4,15 @@ import api, { setAuthToken } from '../api/api';
 // Login user and save token
 export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, { rejectWithValue }) => {
   try {
-    const response = await api.post('/doctors/login', credentials);
+    const { email, password, role } = credentials;
+    const endpoint = role === 'doctor' ? '/doctors/login' : '/patients/login';
+    const response = await api.post(endpoint, { email, password });
     const { token, user } = response.data;
     localStorage.setItem('token', token);
     localStorage.setItem('userInfo', JSON.stringify(user));
+    localStorage.setItem('role', role);
     setAuthToken(token);
-    return { token, user };
+    return { token, user, role };
   } catch (err) {
     return rejectWithValue(err.response.data);
   }
@@ -18,9 +21,6 @@ export const loginUser = createAsyncThunk('auth/loginUser', async (credentials, 
 // Register user with file upload support
 export const registerUser = createAsyncThunk('auth/registerUser', async (userData, { rejectWithValue }) => {
   try {
-
-    // console.log(userData);
-    // console.log("registering user");
     const response = await api.post('/doctors/register', userData, {
       headers: {
         'Content-Type': 'multipart/form-data', // To handle file uploads
@@ -31,10 +31,51 @@ export const registerUser = createAsyncThunk('auth/registerUser', async (userDat
 
     localStorage.setItem('token', token);
     localStorage.setItem('userInfo', JSON.stringify(user));
+    localStorage.setItem('role', 'doctor');
     setAuthToken(token);
     return { token, user };
+  } catch (err) {
+    return rejectWithValue(err.response.data);
+  }
+});
 
-    
+// Register patient with file upload support
+export const registerPatient = createAsyncThunk('auth/registerPatient', async (userData, { rejectWithValue }) => {
+  try {
+    const response = await api.post('/patients/register', userData);
+
+    const { token, user } = response.data;
+
+    localStorage.setItem('token', token);
+    localStorage.setItem('userInfo', JSON.stringify(user));
+    localStorage.setItem('role', 'patient');
+    setAuthToken(token);
+    return { token, user };
+  } catch (err) {
+    return rejectWithValue(err.response.data);
+  }
+});
+
+// Fetch patient details
+export const fetchPatientDetails = createAsyncThunk('auth/fetchPatientDetails', async (_, { rejectWithValue }) => {
+  try {
+    const response = await api.get('/patients/profile');
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response.data);
+  }
+});
+
+// Update patient profile
+export const updatePatientProfile = createAsyncThunk('auth/updatePatientProfile', async (userData, { rejectWithValue }) => {
+  try {
+    const response = await api.put('/patients/updateProfile', userData);
+
+    const updatedUser = response.data;
+
+    // Update localStorage to reflect changes
+    localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+    return updatedUser;
   } catch (err) {
     return rejectWithValue(err.response.data);
   }
@@ -49,15 +90,11 @@ export const updateUserProfile = createAsyncThunk('auth/updateUserProfile', asyn
       },
     });
 
-    // console.log(response);
-
     const updatedUser = response.data;
 
     // Update localStorage to reflect changes
     localStorage.setItem('userInfo', JSON.stringify(updatedUser));
     return updatedUser;
-
-    // return userData;
   } catch (err) {
     return rejectWithValue(err.response.data);
   }
@@ -75,37 +112,31 @@ export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { reject
   }
 });
 
-//fetch doctor profile
+// Fetch doctor profile
 export const fetchDoctorProfile = createAsyncThunk('auth/fetchDoctorProfile', async (_, { rejectWithValue }) => {
-    try {
-      const response = await api.get('/doctors/profile');
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
+  try {
+    const response = await api.get('/doctors/profile');
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response.data);
+  }
 });
 
 export const updateDoctorSchedule = createAsyncThunk('auth/updateDoctorSchedule', async (timeSlot, { rejectWithValue }) => {
   try {
-    // console.log(timeSlot);
-      const response = await api.put('/doctors/updateSchedule', {timeSlot});
-      
-      return response.data;
+    const response = await api.put('/doctors/updateSchedule', { timeSlot });
+    return response.data;
   } catch (err) {
-      return rejectWithValue(err.response.data);
+    return rejectWithValue(err.response.data);
   }
 });
 
 export const fetchAppointments = createAsyncThunk('auth/fetchAppointments', async (_, { rejectWithValue }) => {
   try {
-
-    console.log("fetching appointments");
-    
     const response = await api.get('/doctors/appointments');
-     
     return response.data;
   } catch (err) {
-      return rejectWithValue(err.response.data);
+    return rejectWithValue(err.response.data);
   }
 });
 
@@ -114,6 +145,7 @@ const authSlice = createSlice({
   initialState: {
     user: JSON.parse(localStorage.getItem('userInfo')) || null,
     token: localStorage.getItem('token') || null,
+    role : localStorage.getItem('role') || null,
     loading: false,
     error: null,
   },
@@ -137,6 +169,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.role = action.payload.role; 
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -152,8 +185,53 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.role = 'doctor';
       })
       .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Register Patient
+      .addCase(registerPatient.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerPatient.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.role = 'patient';
+      })
+      .addCase(registerPatient.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Fetch Patient Details
+      .addCase(fetchPatientDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchPatientDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+      })
+      .addCase(fetchPatientDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Update Patient Profile
+      .addCase(updatePatientProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updatePatientProfile.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.patient;
+      })
+      .addCase(updatePatientProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -172,7 +250,7 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      //fetch doctor profile 
+      // Fetch doctor profile
       .addCase(fetchDoctorProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -186,21 +264,21 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      //update doctor schedule
+      // Update doctor schedule
       .addCase(updateDoctorSchedule.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(updateDoctorSchedule.fulfilled, (state, action) => {
-          state.loading = false;
-          state.user =  action.payload.doctor;
+        state.loading = false;
+        state.user = action.payload.doctor;
       })
       .addCase(updateDoctorSchedule.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.payload;
+        state.loading = false;
+        state.error = action.payload;
       })
 
-      //update user profile
+      // Update user profile
       .addCase(updateUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -214,7 +292,7 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
-      //fetch appointments
+      // Fetch appointments
       .addCase(fetchAppointments.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -228,7 +306,6 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
-
   },
 });
 

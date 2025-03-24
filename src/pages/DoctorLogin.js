@@ -7,6 +7,7 @@ import '../styles/DoctorLogin.css';
 const DoctorLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [role, setRole] = useState('doctor'); // Default role is doctor
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { loading, error } = useSelector((state) => state.auth);
@@ -14,7 +15,7 @@ const DoctorLogin = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const result = await dispatch(loginUser({ email, password }));
+            const result = await dispatch(loginUser({ email, password, role }));
             if (result.meta.requestStatus === 'fulfilled') {
                 alert('Login Successful!');
                 navigate('/');  // Redirect to home page
@@ -29,7 +30,7 @@ const DoctorLogin = () => {
     return (
         <div className="login-container">
             <div className="login-card">
-                <h2>Doctor Login</h2>
+                <h2>Login</h2>
                 {error && <p className="error-message">{error.message}</p>}
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="email">Email</label>
@@ -53,6 +54,18 @@ const DoctorLogin = () => {
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
+
+                    <label htmlFor="role">Role</label>
+                    <select
+                        id="role"
+                        name="role"
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        required
+                    >
+                        <option value="doctor">Doctor</option>
+                        <option value="patient">Patient</option>
+                    </select>
 
                     <button type="submit" disabled={loading}>
                         {loading ? 'Logging in...' : 'Login'}

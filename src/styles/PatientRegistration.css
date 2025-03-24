@@ -1,28 +1,28 @@
-.login-container {
+.registration-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 80vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #e0f7fa, #e6f7ff);
     padding: 20px;
 }
 
-.login-card {
+.registration-card {
     background-color: white;
     padding: 30px;
     border-radius: 16px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
+    max-width: 500px;
     width: 100%;
     text-align: center;
     transition: transform 0.3s ease;
 }
 
-.login-card:hover {
+.registration-card:hover {
     transform: translateY(-5px);
 }
 
-.login-card h2 {
+.registration-card h2 {
     margin-bottom: 20px;
     color: #003366;
     font-size: 28px;
@@ -41,8 +41,12 @@ label {
 
 input[type="text"],
 input[type="email"],
+input[type="file"],
 input[type="password"],
-select {
+input[type="number"],
+input[type="date"],
+select,
+textarea {
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 8px;
@@ -51,6 +55,10 @@ select {
     height: 40px; /* Set a consistent height */
     width: 100%; /* Set a consistent width */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+textarea {
+    height: auto; /* Allow textarea to adjust height */
 }
 
 button {
@@ -72,15 +80,50 @@ button:hover {
     background-color: #005599;
 }
 
-input:focus, button:focus, select:focus {
+input:focus, button:focus, textarea:focus, select:focus {
     outline: none;
     border: 1px solid #005599;
     box-shadow: 0 0 5px #005599;
 }
 
-.error-message {
+.error {
     color: red;
     font-size: 14px;
     margin-top: -10px;
     margin-bottom: 10px;
+}
+
+.family-member {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.family-member input,
+.family-member select {
+    height: 35px; /* Set a consistent height for family member inputs */
+}
+
+.family-member input[type="date"] {
+    height: 40px; /* Set a consistent height for date input */
+}
+
+.family-member button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.family-member button:hover {
+    background-color: #0056b3;
 }

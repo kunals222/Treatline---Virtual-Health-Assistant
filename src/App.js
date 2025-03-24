@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import DoctorRegistration from './pages/DoctorRegistration';
+import PatientRegistration from './pages/PatientRegistration'; // Import PatientRegistration
 import DoctorLogin from './pages/DoctorLogin';
 import DoctorDashboard from './pages/DoctorDashboard';
 
@@ -14,7 +15,8 @@ const App = () => {
                 <div className="flex-grow flex flex-col items-center justify-center">
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
-                        <Route path="/register" element={<DoctorRegistration />} />
+                        <Route path="/register/doctor" element={<DoctorRegistration />} />
+                        <Route path="/register/patient" element={<PatientRegistration />} />
                         <Route path="/login" element={<DoctorLogin />} />
                         <Route path="/dashboard" element={<DoctorDashboard />} />
                     </Routes>
