@@ -14,7 +14,7 @@ export const fetchAppointments = createAsyncThunk('appointments/fetch', async (_
 // Fetch available doctors based on symptoms, time slot, and language
 export const fetchAvailableDoctors = createAsyncThunk('appointments/fetchAvailableDoctors', async (criteria, { rejectWithValue }) => {
   try {
-    const response = await api.get('/doctors/available');
+    const response = await api.post('/doctors/predict', criteria);
     return response.data;
   } catch (err) {
     return rejectWithValue(err.response.data);
@@ -36,6 +36,7 @@ const appointmentSlice = createSlice({
   initialState: {
     appointments: [],
     availableDoctors: [],
+    priority_score : "gAAAAABn4bFcUWCq8sMXV5FA5A28uscv0gPyNS7l2xRz7TY6FHxWoy_idrXvIsp1dZwHOuJG7-cBBGbGg9MgTeqV1QMJdHYN2A==",
     loading: false,
     error: null,
   },
@@ -60,6 +61,7 @@ const appointmentSlice = createSlice({
       .addCase(fetchAvailableDoctors.fulfilled, (state, action) => {
         state.loading = false;
         state.availableDoctors = action.payload.doctors;
+        state.priority_score = action.payload.priority_score;
       })
       .addCase(fetchAvailableDoctors.rejected, (state, action) => {
         state.loading = false;

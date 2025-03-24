@@ -9,7 +9,7 @@ const BookAppointment = () => {
     const [language, setLanguage] = useState('');
     const [notes, setNotes] = useState('none');
     const dispatch = useDispatch();
-    const { availableDoctors, loading, error } = useSelector((state) => state.appointments);
+    const { availableDoctors, loading, error ,priority_score} = useSelector((state) => state.appointments);
 
     const timeSlots = [
         '0:00 - 3:00',
@@ -23,11 +23,12 @@ const BookAppointment = () => {
     ];
 
     const handleSearch = () => {
-        dispatch(fetchAvailableDoctors({ symptoms, selectedSlot, language }));
+        const timeSlot = timeSlots.indexOf(selectedSlot);
+        dispatch(fetchAvailableDoctors({ symptoms, timeSlot, language }));
     };
 
     const handleBookAppointment = (doctorId) => {
-        const priority_score = 1;
+        
         const timeSlot = timeSlots.indexOf(selectedSlot);
         console.log({ doctorId, symptoms, selectedSlot, priority_score, language, notes });
         dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language, notes }));
