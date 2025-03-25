@@ -6,6 +6,7 @@ import DoctorRegistration from './pages/DoctorRegistration';
 import PatientRegistration from './pages/PatientRegistration'; // Import PatientRegistration
 import DoctorLogin from './pages/DoctorLogin';
 import DoctorDashboard from './pages/DoctorDashboard';
+import Service from './components/Service'; // Import the Service component
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                         <Route path="/register/patient" element={<PatientRegistration />} />
                         <Route path="/login" element={<DoctorLogin />} />
                         <Route path="/dashboard" element={<DoctorDashboard />} />
+                        <Route path="/service" element={<Service />} /> {/* Add route for Service component */}
                     </Routes>
                 </div>
             </div>

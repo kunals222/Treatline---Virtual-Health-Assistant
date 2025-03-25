@@ -1,31 +1,151 @@
+:root {
+    /* Enhanced color palette - matching Home.css */
+    --primary-gradient: linear-gradient(135deg, #0f4c81 0%, #3a8dff 100%);
+    --secondary-gradient: linear-gradient(135deg, #00b4d8 0%, #00d4ff 100%);
+    --accent-gradient: linear-gradient(45deg, #00ba88 0%, #2ed573 100%);
+    --dark-gradient: linear-gradient(135deg, #222f3e 0%, #353b48 100%);
+    --light-gradient: linear-gradient(135deg, #f5f7fa 0%, #e6e9f0 100%);
+    
+    /* Core colors */
+    --primary-dark: #0f4c81;
+    --primary-light: #3a8dff;
+    --secondary-color: #00b4d8;
+    --accent-color: #00ba88;
+    --success-color: #2ed573;
+    --warning-color: #ffa502;
+    --danger-color: #ff6b6b;
+    --dark-color: #222f3e;
+    --light-color: #f5f7fa;
+    --gray-light: #e6e9f0;
+    --gray-medium: #a4b0be;
+    --gray-dark: #57606f;
+    --text-primary: #2c3e50;
+    --text-secondary: #576574;
+    --text-light: #f5f7fa;
+    
+    /* Shadows with depth */
+    --shadow-sm: 0 2px 8px rgba(15, 76, 129, 0.08);
+    --shadow-md: 0 8px 20px rgba(15, 76, 129, 0.12);
+    --shadow-lg: 0 16px 30px rgba(15, 76, 129, 0.16);
+    --shadow-hover: 0 22px 45px rgba(15, 76, 129, 0.25);
+    --shadow-inset: inset 0 2px 10px rgba(15, 76, 129, 0.05);
+    
+    /* Enhanced animations */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    --transition-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Border radius */
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 30px;
+    --radius-full: 9999px;
+}
+
 .registration-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #e0f7fa, #e6f7ff);
-    padding: 20px;
+    min-height: calc(100vh - var(--navbar-height, 80px));
+    background: var(--light-gradient);
+    padding: 40px 20px;
+    position: relative;
+    overflow: hidden;
+    margin-top: var(--navbar-height, 80px);
+}
+
+.registration-container::before,
+.registration-container::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.registration-container::before {
+    width: 400px;
+    height: 400px;
+    background: var(--secondary-gradient);
+    opacity: 0.08;
+    top: -200px;
+    left: -150px;
+}
+
+.registration-container::after {
+    width: 500px;
+    height: 500px;
+    background: var(--primary-gradient);
+    opacity: 0.05;
+    bottom: -250px;
+    right: -200px;
 }
 
 .registration-card {
     background-color: white;
-    padding: 30px;
-    border-radius: 16px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-    max-width: 500px;
+    padding: 40px;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
     width: 100%;
     text-align: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s var(--transition-smooth);
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 0.8s var(--transition-smooth);
+    border: 1px solid rgba(15, 76, 129, 0.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .registration-card:hover {
     transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+}
+
+.branding {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.branding img {
+    height: 60px;
+    margin-right: 15px;
+}
+
+.branding h1 {
+    color: var(--primary-dark);
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0;
 }
 
 .registration-card h2 {
-    margin-bottom: 20px;
-    color: #003366;
+    margin-bottom: 30px;
+    color: var(--primary-dark);
     font-size: 28px;
+    font-weight: 700;
+    position: relative;
+    display: inline-block;
+}
+
+.registration-card h2::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background: var(--accent-gradient);
+    border-radius: 2px;
 }
 
 form {
@@ -34,9 +154,11 @@ form {
 }
 
 label {
-    margin: 10px 0 5px;
+    margin: 15px 0 5px;
     font-size: 16px;
-    color: #333;
+    color: var(--text-primary);
+    text-align: left;
+    font-weight: 500;
 }
 
 input[type="text"],
@@ -47,83 +169,136 @@ input[type="number"],
 input[type="date"],
 select,
 textarea {
-    padding: 10px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
+    padding: 12px 15px;
+    margin-bottom: 18px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--gray-light);
     font-size: 16px;
-    height: 40px; /* Set a consistent height */
-    width: 100%; /* Set a consistent width */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    transition: all var(--transition-normal);
+    background-color: var(--light-color);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-inset);
 }
 
 textarea {
-    height: auto; /* Allow textarea to adjust height */
+    min-height: 120px;
+    resize: vertical;
 }
 
 button {
-    background-color: #003366;
+    background: var(--primary-gradient);
     color: white;
-    padding: 12px;
-    margin-top: 10px;
+    padding: 15px;
+    margin-top: 20px;
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    height: 40px; /* Set a consistent height */
-    width: 100%; /* Set a consistent width */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    transition: all var(--transition-normal);
+    box-shadow: var(--shadow-md);
+    position: relative;
+    overflow: hidden;
+}
+
+button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.8s var(--transition-smooth);
+    z-index: 1;
 }
 
 button:hover {
-    background-color: #005599;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
 }
 
-input:focus, button:focus, textarea:focus, select:focus {
+button:hover::before {
+    left: 100%;
+}
+
+input:focus, button:focus, select:focus, textarea:focus {
     outline: none;
-    border: 1px solid #005599;
-    box-shadow: 0 0 5px #005599;
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(58, 141, 255, 0.15);
 }
 
 .error {
-    color: red;
+    color: var(--danger-color);
     font-size: 14px;
-    margin-top: -10px;
-    margin-bottom: 10px;
+    margin-top: -14px;
+    margin-bottom: 14px;
+    text-align: left;
 }
 
+/* Family member section styling */
 .family-member {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-bottom: 15px;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid var(--gray-light);
+    border-radius: var(--radius-md);
+    background-color: var(--light-color);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-normal);
 }
 
-.family-member input,
-.family-member select {
-    height: 35px; /* Set a consistent height for family member inputs */
-}
-
-.family-member input[type="date"] {
-    height: 40px; /* Set a consistent height for date input */
+.family-member:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 
 .family-member button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+    margin-top: 10px;
+    background: var(--secondary-gradient);
 }
 
-.family-member button:hover {
-    background-color: #0056b3;
+button[type="button"] {
+    background: var(--secondary-gradient);
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .registration-card {
+        padding: 30px 20px;
+    }
+    
+    .registration-container {
+        padding: 20px;
+    }
+    
+    .branding img {
+        height: 50px;
+    }
+    
+    .branding h1 {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .registration-card h2 {
+        font-size: 24px;
+    }
+    
+    button {
+        font-size: 16px;
+        padding: 12px;
+    }
+    
+    .branding {
+        flex-direction: column;
+    }
+    
+    .branding img {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
 }

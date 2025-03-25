@@ -1,0 +1,298 @@
+:root {
+  /* Enhanced color palette */
+  --primary-gradient: linear-gradient(135deg, #0f4c81 0%, #3a8dff 100%);
+  --secondary-gradient: linear-gradient(135deg, #00b4d8 0%, #00d4ff 100%);
+  --accent-gradient: linear-gradient(45deg, #00ba88 0%, #2ed573 100%);
+  --dark-gradient: linear-gradient(135deg, #222f3e 0%, #353b48 100%);
+  --light-gradient: linear-gradient(135deg, #f5f7fa 0%, #e6e9f0 100%);
+  
+  /* Core colors */
+  --primary-dark: #0f4c81;
+  --primary-light: #3a8dff;
+  --secondary-color: #00b4d8;
+  --accent-color: #00ba88;
+  --success-color: #2ed573;
+  --warning-color: #ffa502;
+  --danger-color: #ff6b6b;
+  --dark-color: #222f3e;
+  --light-color: #f5f7fa;
+  --gray-light: #e6e9f0;
+  --gray-medium: #a4b0be;
+  --gray-dark: #57606f;
+  --text-primary: #2c3e50;
+  --text-secondary: #576574;
+  --text-light: #f5f7fa;
+  
+  /* Shadows with depth */
+  --shadow-sm: 0 2px 8px rgba(15, 76, 129, 0.08);
+  --shadow-md: 0 8px 20px rgba(15, 76, 129, 0.12);
+  --shadow-lg: 0 16px 30px rgba(15, 76, 129, 0.16);
+  --shadow-hover: 0 22px 45px rgba(15, 76, 129, 0.25);
+  
+  /* Border radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+}
+
+.footer {
+  background: linear-gradient(to right, #0f4c81, #1a67b3);
+  color: var(--text-light);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.05);
+}
+
+/* Subtle background pattern */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 60px 20px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Branding section */
+.footer-section.branding {
+  grid-column: span 1;
+}
+
+.footer-logo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.footer-logo img {
+  height: 50px;
+  width: auto;
+  margin-right: 15px;
+  filter: brightness(1.1);
+}
+
+.footer-logo h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.footer-section p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+
+
+
+/* Footer link sections - Adjust to reduce spacing and remove underlines */
+.footer-section.links {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 5px; /* Reduced from 25px */
+  color: white;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.footer-section h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--accent-gradient);
+  border-radius: 1.5px;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Reduced from 12px to bring links closer */
+}
+
+.footer-section ul li {
+  padding: 0;
+  line-height: 1.4; /* Tighter line height */
+}
+
+.footer-section ul li a {
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none; /* Explicitly remove underline */
+  font-size: 15px;
+  transition: all 0.3s ease;
+  display: inline-block;
+  position: relative;
+  padding-left: 0;
+  border-bottom: none; /* Ensure no border-bottom that might look like underline */
+}
+
+.footer-section ul li a::before {
+  content: "›";
+  opacity: 0;
+  position: absolute;
+  left: -15px;
+  transition: all 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+  color: white;
+  padding-left: 15px;
+  text-decoration: none; /* Ensure no underline on hover */
+}
+
+/* Footer bottom */
+.footer-bottom {
+  background-color: rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.footer-bottom p {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer-bottom-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.footer-bottom-links a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none; /* Explicitly remove underline */
+  font-size: 14px;
+  transition: all 0.3s ease;
+  border-bottom: none; /* Ensure no border-bottom */
+}
+
+.footer-bottom-links a:hover {
+  color: white;
+  text-decoration: none; /* Ensure no underline on hover */
+}
+
+.separator {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* For FontAwesome icons - add Font Awesome library link in your index.html */
+.fab {
+  font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .footer-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+  }
+  
+  .footer-section.branding {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 40px 20px 30px;
+  }
+  
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .footer-bottom-links {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer-container {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 30px;
+  }
+  
+  .footer-logo {
+    justify-content: center;
+  }
+  
+  .social-icons {
+    justify-content: center;
+  }
+  
+  .footer-section h3 {
+    padding-bottom: 15px;
+  }
+  
+  .footer-section h3::after {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+  }
+  
+  .footer-section ul li a::before {
+    display: none;
+  }
+  
+  .footer-section ul li a:hover {
+    padding-left: 0;
+    transform: translateY(-3px);
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  .social-icons a:hover {
+    transform: none;
+  }
+  
+  .footer-section ul li a:hover {
+    transform: none;
+  }
+}
+
+/* Add proper support for dark mode */
+@media (prefers-color-scheme: dark) {
+  .footer {
+    background: linear-gradient(to right, #0d3d6b, #145395);
+  }
+}
