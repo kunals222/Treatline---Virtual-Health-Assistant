@@ -10,7 +10,7 @@ const DoctorDashboard = () => {
     const [activeSection, setActiveSection] = useState('scheduled');
     const [feedback, setFeedback] = useState('');
     const dispatch = useDispatch();
-    const { user, loading, error, pastAppointments, currentAppointments, role } = useSelector((state) => state.auth);
+    const { user, loading, error, pastAppointments, currentAppointments, role, appointment } = useSelector((state) => state.auth);
     const [selectedSlots, setSelectedSlots] = useState([]);
 
     const timeSlots = [
@@ -58,6 +58,11 @@ const DoctorDashboard = () => {
         setFeedback('');
     };
 
+    const handleJoinMeeting = (appointmentId) => {
+        const meetingUrl = `http://localhost:4000/${appointmentId}`;
+        window.open(meetingUrl, '_blank');
+    };
+
     return (
         <div className="dashboard">
             <div className="sidebar">
@@ -75,6 +80,7 @@ const DoctorDashboard = () => {
                         <button onClick={() => setActiveSection('profile')}>Profile</button>
                         <button onClick={() => setActiveSection('makeAppointment')}>Book Appointment</button>
                         <button onClick={() => setActiveSection('history')}>Appointment History</button>
+                        <button onClick={() => setActiveSection('scheduled')}>Scheduled Appointments</button>
                     </>
                 )}
             </div>
@@ -83,7 +89,7 @@ const DoctorDashboard = () => {
                     <div className="appointments">
                         {currentAppointments?.map((appt, index) => (
                             <div className="appointment-card" key={index}>
-                                <h3>{appt.patientName}</h3>
+                                <h3>Patient : {appt.patientName}</h3>
                                 <div className="appointment-time">
                                     <span>Start: {new Date(appt.start).toLocaleString()}</span>
                                     <span>End: {new Date(appt.end).toLocaleString()}</span>
@@ -102,9 +108,35 @@ const DoctorDashboard = () => {
                                         </tbody>
                                     </table>
                                 </div>
-                                <button className="join-meeting-button">Join Meeting</button>
+                                <button className="join-meeting-button" onClick={() => handleJoinMeeting(appt._id)}>Join Meeting</button>
                             </div>
                         ))}
+                    </div>
+                )}
+                {role === 'patient' && activeSection === 'scheduled' && appointment && (
+                    <div className="appointments">
+                        <div className="appointment-card">
+                            <h3>Doctor : {appointment.doctorName}</h3>
+                            <div className="appointment-time">
+                                <span>Start: {new Date(appointment.start).toLocaleString()}</span>
+                                <span>End: {new Date(appointment.end).toLocaleString()}</span>
+                            </div>
+                            <div className="appointment-details">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td className="label">💉 Symptoms:</td>
+                                            <td>{appointment.symptoms}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="label">📝 Notes:</td>
+                                            <td>{appointment.notes}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button className="join-meeting-button" onClick={() => handleJoinMeeting(appointment._id)}>Join Meeting</button>
+                        </div>
                     </div>
                 )}
                 {role === 'doctor' && activeSection === 'history' && (
