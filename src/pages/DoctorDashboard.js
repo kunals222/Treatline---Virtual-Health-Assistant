@@ -26,7 +26,7 @@ const DoctorDashboard = () => {
     });
     
     const dispatch = useDispatch();
-    const { user, loading, error, pastAppointments, currentAppointments, role } = useSelector((state) => state.auth);
+    const { user, loading, error, pastAppointments, currentAppointments, role, appointment } = useSelector((state) => state.auth);
     const [selectedSlots, setSelectedSlots] = useState([]);
 
     // Enhanced time slots with AM/PM and period indicators
@@ -142,6 +142,11 @@ const DoctorDashboard = () => {
         return Array.isArray(availabilityByDay[day]) && availabilityByDay[day].includes(slotId);
     };
 
+    const handleJoinMeeting = (appointmentId) => {
+        const meetingUrl = `http://localhost:4000/${appointmentId}`;
+        window.open(meetingUrl, '_blank');
+    };
+
     return (
         <div className="dashboard">
             <div className="sidebar">
@@ -174,6 +179,7 @@ const DoctorDashboard = () => {
                 )}
                 {role === 'patient' && (
                     <>
+<<<<<<< HEAD
                         <button onClick={() => setActiveSection('profile')} className={activeSection === 'profile' ? 'active' : ''}>
                             <i className="fas fa-user"></i>
                             <span>Profile</span>
@@ -186,11 +192,18 @@ const DoctorDashboard = () => {
                             <i className="fas fa-history"></i>
                             <span>Appointment History</span>
                         </button>
+=======
+                        <button onClick={() => setActiveSection('profile')}>Profile</button>
+                        <button onClick={() => setActiveSection('makeAppointment')}>Book Appointment</button>
+                        <button onClick={() => setActiveSection('history')}>Appointment History</button>
+                        <button onClick={() => setActiveSection('scheduled')}>Scheduled Appointments</button>
+>>>>>>> e7649959d824cadea54a9e37f800143368863557
                     </>
                 )}
             </div>
             <div className="content">
                 {role === 'doctor' && activeSection === 'scheduled' && (
+<<<<<<< HEAD
                     <>
                         <div className="content-header">
                             <h2>Upcoming Appointments</h2>
@@ -240,15 +253,57 @@ const DoctorDashboard = () => {
                                     <button className="join-meeting-button">
                                         <i className="fas fa-video"></i> Join Meeting
                                     </button>
+=======
+                    <div className="appointments">
+                        {currentAppointments?.map((appt, index) => (
+                            <div className="appointment-card" key={index}>
+                                <h3>Patient : {appt.patientName}</h3>
+                                <div className="appointment-time">
+                                    <span>Start: {new Date(appt.start).toLocaleString()}</span>
+                                    <span>End: {new Date(appt.end).toLocaleString()}</span>
+>>>>>>> e7649959d824cadea54a9e37f800143368863557
                                 </div>
                             )) : (
                                 <div className="empty-state">
                                     <div className="empty-state-icon">📅</div>
                                     <p className="empty-state-text">You have no upcoming appointments</p>
                                 </div>
+<<<<<<< HEAD
                             )}
                         </div>
                     </>
+=======
+                                <button className="join-meeting-button" onClick={() => handleJoinMeeting(appt._id)}>Join Meeting</button>
+                            </div>
+                        ))}
+                    </div>
+>>>>>>> e7649959d824cadea54a9e37f800143368863557
+                )}
+                {role === 'patient' && activeSection === 'scheduled' && appointment && (
+                    <div className="appointments">
+                        <div className="appointment-card">
+                            <h3>Doctor : {appointment.doctorName}</h3>
+                            <div className="appointment-time">
+                                <span>Start: {new Date(appointment.start).toLocaleString()}</span>
+                                <span>End: {new Date(appointment.end).toLocaleString()}</span>
+                            </div>
+                            <div className="appointment-details">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td className="label">💉 Symptoms:</td>
+                                            <td>{appointment.symptoms}</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="label">📝 Notes:</td>
+                                            <td>{appointment.notes}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <button className="join-meeting-button" onClick={() => handleJoinMeeting(appointment._id)}>Join Meeting</button>
+                        </div>
+                    </div>
                 )}
                 {role === 'doctor' && activeSection === 'history' && (
                     <div className="history-section">

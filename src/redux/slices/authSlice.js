@@ -234,6 +234,7 @@ const authSlice = createSlice({
       .addCase(fetchPatientDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
+        state.appointment = action.payload.appointment;
       })
       .addCase(fetchPatientDetails.rejected, (state, action) => {
         state.loading = false;
