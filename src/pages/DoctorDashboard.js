@@ -4,10 +4,11 @@ import Profile from '../pages/Profile.js';
 import PatientProfile from './PatientProfile.js';
 import BookAppointment from './BookAppointment.js';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchDoctorProfile, updateDoctorSchedule, fetchAppointments, fetchPatientDetails } from '../redux/slices/authSlice';
+import { fetchDoctorProfile, updateDoctorSchedule, fetchAppointments, fetchPatientDetails, submitFeedback } from '../redux/slices/authSlice';
 
 const DoctorDashboard = () => {
     const [activeSection, setActiveSection] = useState('scheduled');
+    const [feedback, setFeedback] = useState('');
     const dispatch = useDispatch();
     const { user, loading, error, pastAppointments, currentAppointments, role } = useSelector((state) => state.auth);
     const [selectedSlots, setSelectedSlots] = useState([]);
@@ -52,6 +53,11 @@ const DoctorDashboard = () => {
         dispatch(updateDoctorSchedule(updatedTimeSlot));
     };
 
+    const handleFeedbackSubmit = () => {
+        dispatch(submitFeedback({ feedback }));
+        setFeedback('');
+    };
+
     return (
         <div className="dashboard">
             <div className="sidebar">
@@ -61,6 +67,7 @@ const DoctorDashboard = () => {
                         <button onClick={() => setActiveSection('history')}>Appointment History</button>
                         <button onClick={() => setActiveSection('availability')}>Manage Availability</button>
                         <button onClick={() => setActiveSection('profile')}>Doctor Profile</button>
+                        <button onClick={() => setActiveSection('feedback')}>Feedback</button>
                     </>
                 )}
                 {role === 'patient' && (
@@ -189,6 +196,18 @@ const DoctorDashboard = () => {
                             ))}
                         </tbody>
                     </table>
+                )}
+                {role === 'doctor' && activeSection === 'feedback' && (
+                    <div className="feedback-section">
+                        <h3>Submit Feedback</h3>
+                        <textarea
+                            value={feedback}
+                            onChange={(e) => setFeedback(e.target.value)}
+                            placeholder="Enter your feedback"
+                            className="feedback-textarea"
+                        />
+                        <button onClick={handleFeedbackSubmit} className="submit-feedback-button">Submit Feedback</button>
+                    </div>
                 )}
             </div>
         </div>

@@ -100,6 +100,16 @@ export const updateUserProfile = createAsyncThunk('auth/updateUserProfile', asyn
   }
 });
 
+// Submit feedback
+export const submitFeedback = createAsyncThunk('auth/submitFeedback', async (feedbackData, { rejectWithValue }) => {
+  try {
+    const response = await api.post('/doctors/feedback', feedbackData);
+    return response.data;
+  } catch (err) {
+    return rejectWithValue(err.response.data);
+  }
+});
+
 // Logout user
 export const logoutUser = createAsyncThunk('auth/logoutUser', async (_, { rejectWithValue }) => {
   try {
@@ -145,7 +155,7 @@ const authSlice = createSlice({
   initialState: {
     user: JSON.parse(localStorage.getItem('userInfo')) || null,
     token: localStorage.getItem('token') || null,
-    role : localStorage.getItem('role') || null,
+    role: localStorage.getItem('role') || null,
     loading: false,
     error: null,
   },
@@ -232,6 +242,20 @@ const authSlice = createSlice({
         state.user = action.payload.patient;
       })
       .addCase(updatePatientProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Submit Feedback
+      .addCase(submitFeedback.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(submitFeedback.fulfilled, (state, action) => {
+        state.loading = false;
+        // Handle successful feedback submission (e.g., show a success message)
+      })
+      .addCase(submitFeedback.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
