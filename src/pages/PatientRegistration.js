@@ -4,7 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { registerPatient } from '../redux/slices/authSlice'; // Assuming you have a registerPatient action
 import '../styles/PatientRegistration.css';
 import logo from '../assets/logo1.png';
-import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 
 const PatientRegistration = () => {
@@ -102,7 +101,7 @@ const PatientRegistration = () => {
 
     return (
         <>
-            <Navbar />
+
             <div className="registration-container">
                 <div className="registration-card">
                     <div className="branding">

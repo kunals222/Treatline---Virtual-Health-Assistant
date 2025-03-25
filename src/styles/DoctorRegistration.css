@@ -112,7 +112,7 @@
     box-shadow: var(--shadow-hover);
 }
 
-/* Updated branding section to match Patient Registration */
+/* Enhanced branding section with logo */
 .branding {
     display: flex;
     align-items: center;
@@ -121,8 +121,9 @@
 }
 
 .branding img {
-    height: 70px;
+    height: 60px;
     margin-right: 15px;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
 }
 
 .branding h1 {
@@ -210,9 +211,11 @@ form {
     flex-direction: column;
 }
 
+/* Better spacing in forms */
 label {
-    margin: 15px 0 8px;
-    font-size: 16px;
+    display: block;
+    margin: 12px 0 8px;
+    font-size: 15px;
     color: var(--text-primary);
     text-align: left;
     font-weight: 600;
@@ -228,10 +231,11 @@ input[type="tel"],
 select,
 textarea {
     padding: 14px 16px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     border-radius: var(--radius-md);
     border: 1px solid var(--gray-light);
-    font-size: 16px;
+    font-size: 15px;
+    width: 100%;
     transition: all var(--transition-normal);
     background-color: var(--light-color);
     color: var(--text-primary);
@@ -241,6 +245,14 @@ textarea {
 textarea {
     min-height: 120px;
     resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 3px rgba(58, 141, 255, 0.15);
+    outline: none;
 }
 
 /* Enhanced button styles to match Patient Registration */
@@ -304,6 +316,19 @@ button:hover::before {
     cursor: not-allowed;
 }
 
+/* Improved form layout */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.form-row > div {
+    flex: 1;
+    min-width: 200px;
+}
+
 /* Enhanced form row styling to match Patient Registration */
 .form-row {
     display: flex;
@@ -327,14 +352,11 @@ button:hover::before {
     display: flex;
     align-items: flex-start;
     margin: 25px 0;
-    background-color: rgba(15, 76, 129, 0.03);
-    padding: 15px;
-    border-radius: var(--radius-md);
-    border: 1px solid rgba(15, 76, 129, 0.08);
+    text-align: left;
 }
 
 .terms-checkbox input {
-    margin-top: 5px;
+    margin-top: 4px;
     margin-right: 12px;
     width: 18px;
     height: 18px;
@@ -369,11 +391,9 @@ button:hover::before {
 
 /* Style adjustments for section headers */
 h3 {
-    font-size: 1.4rem;
+    font-size: 20px;
     color: var(--primary-dark);
-    margin-bottom: 25px;
-    font-weight: 600;
-    position: relative;
+    margin: 30px 0 20px;
     padding-bottom: 10px;
     border-bottom: 1px solid var(--gray-light);
     text-align: left;
@@ -383,12 +403,19 @@ h3 {
 @media (max-width: 768px) {
     .form-row {
         flex-direction: column;
-        gap: 10px;
+        gap: 0;
     }
     
-    .step {
-        font-size: 12px;
-        padding: 4px 10px;
+    .form-row > div {
+        min-width: 100%;
+    }
+    
+    .registration-card {
+        padding: 25px 20px;
+    }
+    
+    .branding img {
+        height: 50px;
     }
 }
 
@@ -429,4 +456,33 @@ h3 {
         margin-right: 0;
         margin-bottom: 10px;
     }
+}
+
+/* Enhanced language & day selection */
+.form-row div label {
+    display: inline-block;
+    margin: 0 5px 0 0;
+}
+
+/* Enhanced languages and days section */
+.form-row div input[type="checkbox"] {
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.form-row div:has(input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-basis: calc(33.333% - 15px);
+    min-width: auto;
+}
+
+/* Adjust form-row for checkboxes */
+.form-row:has(input[type="checkbox"]) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 10px;
 }

@@ -13,7 +13,7 @@ const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const { token } = useSelector((state) => state.auth);
+    const { token, role } = useSelector((state) => state.auth);
 
     // Close mobile menu when route changes
     useEffect(() => {
@@ -62,6 +62,11 @@ const Navbar = () => {
         setIsOpen(false);
     };
 
+    const handleLoginClick = () => {
+        navigate('/login');
+        setIsOpen(false);
+    };
+
     // Close dropdown when clicking outside
     useEffect(() => {
         const closeDropdown = () => {
@@ -72,6 +77,37 @@ const Navbar = () => {
         return () => document.removeEventListener('click', closeDropdown);
     }, [isDropdownOpen]);
 
+    const getNavLinks = () => {
+        if (!token) {
+            return (
+                <>
+                    <Link to="/">Home</Link>
+                    <Link to="/service">Services</Link>
+                </>
+            );
+        }
+
+        // Navigation links for logged-in patients
+        if (role === 'patient') {
+            return (
+                <>
+                    <Link to="/">Home</Link>
+                    <Link to="/doctors">Find Doctors</Link>
+                    <Link to="/dashboard">Dashboard</Link>
+                </>
+            );
+        }
+
+        // Navigation links for logged-in doctors
+        return (
+            <>
+                <Link to="/">Home</Link>
+                <Link to="/service">Services</Link>
+                <Link to="/dashboard">Dashboard</Link>
+            </>
+        );
+    };
+
     return (
         <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="logo">
@@ -79,16 +115,11 @@ const Navbar = () => {
                 <h1>TreatLine</h1>
             </div>
             <div className={`links ${isOpen ? 'open' : ''}`}>
-                <Link to="/">Home</Link>
-                <Link to="/service">Services</Link>
-                <Link to="/doctors">Find Doctors</Link>
+                {getNavLinks()}
                 {token ? (
-                    <>
-                        <Link to="/dashboard">Dashboard</Link>
-                        <button onClick={handleLogout} className="logout-button">
-                            Logout
-                        </button>
-                    </>
+                    <button onClick={handleLogout} className="logout-button">
+                        Logout
+                    </button>
                 ) : (
                     <>
                         <div className="register-dropdown" onClick={(e) => e.stopPropagation()}>
@@ -98,7 +129,9 @@ const Navbar = () => {
                                 <button onClick={() => handleRegisterOptionClick('patient')}>Patient</button>
                             </div>
                         </div>
-                        <Link to="/login" className="login-button">Login</Link>
+                        <button className="login-button" onClick={handleLoginClick}>
+                            Login
+                        </button>
                     </>
                 )}
             </div>

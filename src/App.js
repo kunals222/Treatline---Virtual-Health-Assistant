@@ -4,9 +4,10 @@ import Navbar from './components/Navbar';
 import LandingPage from './pages/LandingPage';
 import DoctorRegistration from './pages/DoctorRegistration';
 import PatientRegistration from './pages/PatientRegistration'; // Import PatientRegistration
-import DoctorLogin from './pages/DoctorLogin';
+import Login from './pages/Login';
 import DoctorDashboard from './pages/DoctorDashboard';
 import Service from './components/Service'; // Import the Service component
+import PatientDashboard from './pages/PatientDashboard'; // Import PatientDashboard
 
 const App = () => {
     return (
@@ -18,9 +19,10 @@ const App = () => {
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/register/doctor" element={<DoctorRegistration />} />
                         <Route path="/register/patient" element={<PatientRegistration />} />
-                        <Route path="/login" element={<DoctorLogin />} />
+                        <Route path="/login" element={<Login />} />
                         <Route path="/dashboard" element={<DoctorDashboard />} />
                         <Route path="/service" element={<Service />} /> {/* Add route for Service component */}
+                        <Route path="/patient/dashboard" element={<PatientDashboard />} /> {/* Add route for PatientDashboard component */}
                     </Routes>
                 </div>
             </div>

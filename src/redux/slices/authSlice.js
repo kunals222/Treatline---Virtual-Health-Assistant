@@ -150,22 +150,30 @@ export const fetchAppointments = createAsyncThunk('auth/fetchAppointments', asyn
   }
 });
 
+const initialState = {
+  user: JSON.parse(localStorage.getItem('userInfo')) || null,
+  token: localStorage.getItem('token') || null,
+  role: localStorage.getItem('role') || null,
+  loading: false,
+  error: null,
+};
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: JSON.parse(localStorage.getItem('userInfo')) || null,
-    token: localStorage.getItem('token') || null,
-    role: localStorage.getItem('role') || null,
-    loading: false,
-    error: null,
-  },
+  initialState,
   reducers: {
+    login: (state, action) => {
+      state.token = action.payload.token;
+      state.role = action.payload.role;
+      state.user = action.payload.user;
+    },
     logout: (state) => {
       localStorage.removeItem('token');
       localStorage.removeItem('userInfo');
       setAuthToken(null);
       state.user = null;
       state.token = null;
+      state.role = null;
     },
   },
   extraReducers: (builder) => {
@@ -333,5 +341,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;

@@ -257,7 +257,7 @@
   
   .hero-assistant-text {
     font-size: 2.2rem;
-    margin-bottom: 10px; /* Reduced from 16px */
+    margin-bottom: 5px; /* Reduced from 16px */
     color: var(--accent-color);
     font-weight: 600;
     animation: fadeInUp 1.2s var(--transition-smooth) 0.3s both;

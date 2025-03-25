@@ -156,19 +156,9 @@
     box-shadow: 0 6px 15px rgba(255, 59, 48, 0.35);
 }
 
-.login-button {
-    background-color: var(--accent-color) !important;
-    padding: 10px 22px !important;
-    border-radius: var(--border-radius-sm) !important;
-    font-weight: 600 !important;
-    box-shadow: 0 4px 10px rgba(0, 200, 83, 0.25) !important;
-    transition: all var(--transition-speed) ease !important;
-}
 
-.login-button:hover {
-    box-shadow: 0 6px 15px rgba(0, 200, 83, 0.35) !important;
-    background-color: #00b84d !important;
-}
+
+
 
 .navbar-toggle {
     display: none;
@@ -187,6 +177,92 @@
 .navbar-toggle:hover {
     background-color: rgba(255, 255, 255, 0.1);
     transform: rotate(90deg);
+}
+
+.nav-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+/* Style both login and register buttons */
+.dropdown-btn {
+    background: var(--primary-gradient);
+    color: white;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    min-width: 200px;
+    background-color: white;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 1000;
+    overflow: hidden;
+    animation: dropdownFade 0.2s ease;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: background-color var(--transition-fast);
+}
+
+.dropdown-content a:hover {
+    background-color: var(--light-color);
+}
+
+.dropdown-content img {
+    width: 20px;
+    height: 20px;
+}
+
+.dropdown-content button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px 20px;
+    color: var(--text-primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: 16px;
+    transition: background-color var(--transition-fast);
+}
+
+.dropdown-content button:hover {
+    background-color: var(--light-color);
+}
+
+@keyframes dropdownFade {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* Responsive Styles */
@@ -257,11 +333,7 @@
         padding: 10px 15px;
     }
 
-    .login-button {
-        margin: 5px 15px;
-        text-align: center;
-        width: calc(100% - 30px);
-    }
+    
 
     @keyframes slideDown {
         from {
@@ -438,10 +510,7 @@
     transform: none;
 }
 
-/* Additional rule to ensure no underlines */
-.login-button {
-    text-decoration: none !important; /* Ensure no underline with highest specificity */
-}
+
 
 /* Make sure all links in navbar have no underline even in various states */
 .links a:hover, 
