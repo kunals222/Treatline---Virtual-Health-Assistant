@@ -98,7 +98,7 @@ const Navbar = () => {
             );
         }
 
-        // Navigation links for logged-in doctors
+        // Navigation links for logged-in redoctors
         return (
             <>
                 <Link to="/">Home</Link>
@@ -129,7 +129,7 @@ const Navbar = () => {
                                 <button onClick={() => handleRegisterOptionClick('patient')}>Patient</button>
                             </div>
                         </div>
-                        <button className="login-button" onClick={handleLoginClick}>
+                        <button className="register-dropdown" onClick={handleLoginClick}>
                             Login
                         </button>
                     </>

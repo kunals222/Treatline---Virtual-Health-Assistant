@@ -44,10 +44,20 @@ const Profile = () => {
 
     const handleInputChange = (e) => {
         const { name, value, files } = e.target;
-        setFormData({
-            ...formData,
-            [name]: files ? files[0] : value,
-        });
+        if (files) {
+            // Create a preview URL for the selected image
+            const previewUrl = URL.createObjectURL(files[0]);
+            setFormData({
+                ...formData,
+                [name]: files[0],
+                profile_image_url: previewUrl
+            });
+        } else {
+            setFormData({
+                ...formData,
+                [name]: value,
+            });
+        }
     };
 
     const handleAddCertificate = () => {
@@ -96,133 +106,206 @@ const Profile = () => {
     };
 
     const goingEditing = () => {
-        console.log(formData);
         setIsEditing(!isEditing);
     }
 
     return (
-        <div className="profile-section-container">
-            <div className="profile-section-header">
-                <div className="profile-section-info">
-                    {isEditing ? (
-                        <>
+        <div className="profile-container">
+            <div className="profile-header">
+                <h1 className="profile-title">Doctor Profile</h1>
+            </div>
+            
+            <div className="profile-content">
+                <div className="profile-image-section">
+                    <div className="profile-image-container">
+                        <img
+                            src={formData.profile_image_url}
+                            alt="Doctor Profile"
+                            className="profile-image"
+                        />
+                        {isEditing && (
+                            <div className="profile-image-overlay">
+                                <label htmlFor="profile-image-input" className="image-upload-label">
+                                    ✏️ Change Photo
+                                </label>
+                                <input
+                                    id="profile-image-input"
+                                    type="file"
+                                    name="profile_image"
+                                    onChange={handleInputChange}
+                                    className="profile-image-input"
+                                />
+                            </div>
+                        )}
+                    </div>
+                    <div className="profile-name-section">
+                        {isEditing ? (
                             <input
                                 type="text"
                                 name="name"
                                 value={formData.name}
                                 onChange={handleInputChange}
-                                className="profile-section-input"
+                                className="profile-input name-input"
+                                placeholder="Your Name"
                             />
-                            <input
-                                type="email"
-                                name="email"
-                                value={formData.email}
-                                onChange={handleInputChange}
-                                className="profile-section-input"
-                                disabled
-                            />
-                        </>
-                    ) : (
-                        <>
-                            <h2 className="profile-section-name">{user?.name}</h2>
-                            <p className="profile-section-email">{user?.email}</p>
-                        </>
-                    )}
+                        ) : (
+                            <h2 className="profile-name">{user?.name}</h2>
+                        )}
+                        <p className="profile-email">✉️ {user?.email}</p>
+                    </div>
                 </div>
-                <div className="profile-section-image-container">
-                    <img
-                        src={formData.profile_image_url}
-                        alt="Doctor Profile"
-                        className="profile-section-image"
-                    />
-                    {isEditing && (
-                        <input
-                            type="file"
-                            name="profile_image"
-                            onChange={handleInputChange}
-                            className="profile-section-image-input"
-                        />
-                    )}
-                </div>
-            </div>
-            <div className="profile-section-details">
-                {isEditing ? (
-                    <>
-                        <label>Specialist Degree:</label>
-                        <input
-                            type="text"
-                            name="specialistDegree"
-                            value={formData.specialistDegree}
-                            onChange={handleInputChange}
-                            className="profile-section-input"
-                        />
-                        <label>Languages:</label>
-                        <input
-                            type="text"
-                            name="languages"
-                            value={formData.languages}
-                            onChange={handleInputChange}
-                            className="profile-section-input"
-                        />
-                        <label>Experience:</label>
-                        <input
-                            type="text"
-                            name="experience"
-                            value={formData.experience}
-                            onChange={handleInputChange}
-                            className="profile-section-input"
-                        />
-                        <label>Phone:</label>
-                        <input
-                            type="text"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleInputChange}
-                            className="profile-section-input"
-                        />
-                        <label>Medical Registration ID:</label>
-                        <input
-                            type="text"
-                            name="medical_registration_id"
-                            value={formData.medical_registration_id}
-                            onChange={handleInputChange}
-                            className="profile-section-input"
-                        />
-
-                        <label>Certificates:</label>
-                        {formData.certificates.map((certificate, index) => (
-                            <div key={index} className="certificate-item">
-                                <label>certificate_url</label>
-                                <button onClick={() => handleRemoveCertificate(index)} className="remove-certificate">Remove</button>
+                
+                <div className="profile-details-section">
+                    <div className="profile-card">
+                        <h3 className="section-title">Professional Information</h3>
+                        <div className="profile-field">
+                            <div className="field-label">🩺 Specialist Degree</div>
+                            <div className="field-value">
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="specialistDegree"
+                                        value={formData.specialistDegree}
+                                        onChange={handleInputChange}
+                                        className="profile-input"
+                                        placeholder="Your Specialization"
+                                    />
+                                ) : (
+                                    <span>{user?.specialistDegree || "Not specified"}</span>
+                                )}
                             </div>
-                        ))}
-                        <button onClick={handleAddCertificate} className="add-certificate">Add Certificate</button>
-                    </>
-                ) : (
-                    <>
-                        <p><strong>Specialist Degree:</strong> {user?.specialistDegree}</p>
-                        <p><strong>Languages:</strong> {user?.language}</p>
-                        <p><strong>Experience:</strong> {user?.years_of_experience}</p>
-                        <p><strong>Phone:</strong> {user?.phone}</p>
-                        <p><strong>Medical Registration ID:</strong> {user?.medical_registration_id}</p>
-                        <p><strong>Certificates:</strong> {user?.certificates?.join(', ') || 'No certificates added.'}</p>
-                    </>
+                        </div>
+                        
+                        <div className="profile-field">
+                            <div className="field-label">🗣️ Languages</div>
+                            <div className="field-value">
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="languages"
+                                        value={formData.languages}
+                                        onChange={handleInputChange}
+                                        className="profile-input"
+                                        placeholder="Languages you speak"
+                                    />
+                                ) : (
+                                    <span>{user?.language || "Not specified"}</span>
+                                )}
+                            </div>
+                        </div>
+                        
+                        <div className="profile-field">
+                            <div className="field-label">📅 Experience</div>
+                            <div className="field-value">
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="experience"
+                                        value={formData.experience}
+                                        onChange={handleInputChange}
+                                        className="profile-input"
+                                        placeholder="Years of experience"
+                                    />
+                                ) : (
+                                    <span>{user?.years_of_experience || "Not specified"}</span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="profile-card">
+                        <h3 className="section-title">Contact & Verification</h3>
+                        <div className="profile-field">
+                            <div className="field-label">📞 Phone</div>
+                            <div className="field-value">
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="phone"
+                                        value={formData.phone}
+                                        onChange={handleInputChange}
+                                        className="profile-input"
+                                        placeholder="Your phone number"
+                                    />
+                                ) : (
+                                    <span>{user?.phone || "Not specified"}</span>
+                                )}
+                            </div>
+                        </div>
+                        
+                        <div className="profile-field">
+                            <div className="field-label">🆔 Medical Registration ID</div>
+                            <div className="field-value">
+                                {isEditing ? (
+                                    <input
+                                        type="text"
+                                        name="medical_registration_id"
+                                        value={formData.medical_registration_id}
+                                        onChange={handleInputChange}
+                                        className="profile-input"
+                                        placeholder="Medical license number"
+                                    />
+                                ) : (
+                                    <span>{user?.medical_registration_id || "Not specified"}</span>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="profile-card">
+                        <h3 className="section-title">🎓 Certificates</h3>
+                        {isEditing ? (
+                            <div className="certificates-section">
+                                {formData.certificates.map((certificate, index) => (
+                                    <div key={index} className="certificate-item">
+                                        <span className="certificate-label">Certificate #{index + 1}</span>
+                                        <button 
+                                            onClick={() => handleRemoveCertificate(index)} 
+                                            className="remove-certificate-btn"
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                <button onClick={handleAddCertificate} className="add-certificate-btn">
+                                    Add Certificate
+                                </button>
+                            </div>
+                        ) : (
+                            <div className="certificates-list">
+                                {user?.certificates && user.certificates.length > 0 ? (
+                                    user.certificates.map((cert, index) => (
+                                        <div key={index} className="certificate-item-display">
+                                            <span>Certificate #{index + 1}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <span className="no-certificates">No certificates added</span>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </div>
+                
+                {loading && <div className="loading-overlay"><span>Loading...</span></div>}
+                
+                {error && (
+                    <div className="error-message">
+                        {typeof error === 'string' ? error : JSON.stringify(error)}
+                    </div>
                 )}
-            </div>
-            
-            {loading && <p>Loading...</p>}
-            {error && <p className="error">{typeof error === 'string' ? error : JSON.stringify(error)}</p>}
-
-            <div className="profile-section-edit">
-            {isEditing ?
-                <button onClick={() => handleSave()} className="profile-section-button">
-                    Save 
-                </button>
-                :
-                <button onClick={() => goingEditing()} className="profile-section-button">
-                    Edit
-                </button>
-            }
+                
+                <div className="profile-actions">
+                    {isEditing ? (
+                        <button onClick={handleSave} className="save-button">
+                            💾 Save Changes
+                        </button>
+                    ) : (
+                        <button onClick={goingEditing} className="edit-button">
+                            ✏️ Edit Profile
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );
