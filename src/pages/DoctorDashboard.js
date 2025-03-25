@@ -179,7 +179,6 @@ const DoctorDashboard = () => {
                 )}
                 {role === 'patient' && (
                     <>
-<<<<<<< HEAD
                         <button onClick={() => setActiveSection('profile')} className={activeSection === 'profile' ? 'active' : ''}>
                             <i className="fas fa-user"></i>
                             <span>Profile</span>
@@ -192,18 +191,15 @@ const DoctorDashboard = () => {
                             <i className="fas fa-history"></i>
                             <span>Appointment History</span>
                         </button>
-=======
-                        <button onClick={() => setActiveSection('profile')}>Profile</button>
-                        <button onClick={() => setActiveSection('makeAppointment')}>Book Appointment</button>
-                        <button onClick={() => setActiveSection('history')}>Appointment History</button>
-                        <button onClick={() => setActiveSection('scheduled')}>Scheduled Appointments</button>
->>>>>>> e7649959d824cadea54a9e37f800143368863557
+                        <button onClick={() => setActiveSection('scheduled')} className={activeSection === 'scheduled' ? 'active' : ''}>
+                            <i className="fas fa-calendar-check"></i>
+                            <span>Scheduled Appointments</span>
+                        </button>
                     </>
                 )}
             </div>
             <div className="content">
                 {role === 'doctor' && activeSection === 'scheduled' && (
-<<<<<<< HEAD
                     <>
                         <div className="content-header">
                             <h2>Upcoming Appointments</h2>
@@ -250,61 +246,133 @@ const DoctorDashboard = () => {
                                             </tbody>
                                         </table>
                                     </div>
-                                    <button className="join-meeting-button">
+                                    <button className="join-meeting-button" onClick={() => handleJoinMeeting(appt._id)}>
                                         <i className="fas fa-video"></i> Join Meeting
                                     </button>
-=======
-                    <div className="appointments">
-                        {currentAppointments?.map((appt, index) => (
-                            <div className="appointment-card" key={index}>
-                                <h3>Patient : {appt.patientName}</h3>
-                                <div className="appointment-time">
-                                    <span>Start: {new Date(appt.start).toLocaleString()}</span>
-                                    <span>End: {new Date(appt.end).toLocaleString()}</span>
->>>>>>> e7649959d824cadea54a9e37f800143368863557
                                 </div>
                             )) : (
                                 <div className="empty-state">
                                     <div className="empty-state-icon">📅</div>
                                     <p className="empty-state-text">You have no upcoming appointments</p>
                                 </div>
-<<<<<<< HEAD
                             )}
                         </div>
                     </>
-=======
-                                <button className="join-meeting-button" onClick={() => handleJoinMeeting(appt._id)}>Join Meeting</button>
-                            </div>
-                        ))}
-                    </div>
->>>>>>> e7649959d824cadea54a9e37f800143368863557
                 )}
-                {role === 'patient' && activeSection === 'scheduled' && appointment && (
-                    <div className="appointments">
-                        <div className="appointment-card">
-                            <h3>Doctor : {appointment.doctorName}</h3>
-                            <div className="appointment-time">
-                                <span>Start: {new Date(appointment.start).toLocaleString()}</span>
-                                <span>End: {new Date(appointment.end).toLocaleString()}</span>
-                            </div>
-                            <div className="appointment-details">
-                                <table>
-                                    <tbody>
-                                        <tr>
-                                            <td className="label">💉 Symptoms:</td>
-                                            <td>{appointment.symptoms}</td>
-                                        </tr>
-                                        <tr>
-                                            <td className="label">📝 Notes:</td>
-                                            <td>{appointment.notes}</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button className="join-meeting-button" onClick={() => handleJoinMeeting(appointment._id)}>Join Meeting</button>
+                
+                {/* Patient scheduled appointments */}
+                {role === 'patient' && activeSection === 'scheduled' && (
+                    <div className="scheduled-appointments-section">
+                        <div className="scheduled-appointments-header">
+                            <h2 className="scheduled-appointments-title">
+                                <i className="fas fa-calendar-check"></i>
+                                Scheduled Appointments
+                            </h2>
+                            <p className="scheduled-appointments-subtitle">
+                                Your upcoming appointments are listed below
+                            </p>
+                        </div>
+                        <div className="scheduled-appointments-content">
+                            {appointment ? (
+                                <div className="scheduled-cards">
+                                    <div className="scheduled-card">
+                                        <div className="scheduled-card-header">
+                                            <div className="doctor-info">
+                                                <div className="small-avatar">
+                                                    {appointment.doctorName?.charAt(0).toUpperCase() || "D"}
+                                                </div>
+                                                <div className="doctor-info-details">
+                                                    <div className="doctor-name-small">Dr. {appointment.doctorName}</div>
+                                                    <div className="doctor-specialty-small">
+                                                        {appointment.doctorSpecialty || "General Physician"}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="scheduled-status">Confirmed</div>
+                                        </div>
+                                        <div className="scheduled-card-body">
+                                            <ul className="scheduled-details-list">
+                                                <li className="scheduled-detail-item">
+                                                    <div className="scheduled-detail-icon">
+                                                        <i className="far fa-calendar-alt"></i>
+                                                    </div>
+                                                    <div className="scheduled-detail-content">
+                                                        <div className="scheduled-detail-label">Date</div>
+                                                        <div className="scheduled-detail-value">
+                                                            {new Date(appointment.start).toLocaleDateString('en-US', {
+                                                                weekday: 'long',
+                                                                year: 'numeric',
+                                                                month: 'long',
+                                                                day: 'numeric'
+                                                            })}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li className="scheduled-detail-item">
+                                                    <div className="scheduled-detail-icon">
+                                                        <i className="far fa-clock"></i>
+                                                    </div>
+                                                    <div className="scheduled-detail-content">
+                                                        <div className="scheduled-detail-label">Time</div>
+                                                        <div className="scheduled-detail-value">
+                                                            {new Date(appointment.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - 
+                                                            {new Date(appointment.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li className="scheduled-detail-item">
+                                                    <div className="scheduled-detail-icon">
+                                                        <i className="fas fa-comment-medical"></i>
+                                                    </div>
+                                                    <div className="scheduled-detail-content">
+                                                        <div className="scheduled-detail-label">Symptoms</div>
+                                                        <div className="scheduled-detail-value">
+                                                            {appointment.symptoms || "No symptoms recorded"}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li className="scheduled-detail-item">
+                                                    <div className="scheduled-detail-icon">
+                                                        <i className="fas fa-notes-medical"></i>
+                                                    </div>
+                                                    <div className="scheduled-detail-content">
+                                                        <div className="scheduled-detail-label">Notes</div>
+                                                        <div className="scheduled-detail-value">
+                                                            {appointment.notes || "No additional notes"}
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div className="scheduled-card-footer">
+                                            <button 
+                                                className="scheduled-action-btn join-btn" 
+                                                onClick={() => handleJoinMeeting(appointment._id)}
+                                            >
+                                                <i className="fas fa-video"></i> Join Meeting
+                                            </button>
+                                            <button className="scheduled-action-btn cancel-btn">
+                                                <i className="fas fa-times"></i> Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="empty-appointments">
+                                    <div className="empty-icon">
+                                        <i className="fas fa-calendar-day"></i>
+                                    </div>
+                                    <p className="empty-text">You don't have any upcoming appointments</p>
+                                    <button className="book-now-btn" onClick={() => setActiveSection('makeAppointment')}>
+                                        <i className="fas fa-plus"></i> Book an Appointment
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
                 )}
+                
+                {/* Rest of the content sections */}
                 {role === 'doctor' && activeSection === 'history' && (
                     <div className="history-section">
                         <div className="history-header">
@@ -351,6 +419,7 @@ const DoctorDashboard = () => {
                         </div>
                     </div>
                 )}
+                
                 {role === 'doctor' && activeSection === 'availability' && (
                     <div className="availability">
                         <h3>
@@ -526,10 +595,97 @@ const DoctorDashboard = () => {
                 {role === 'patient' && activeSection === 'profile' && <PatientProfile />}
 
                 {role === 'patient' && activeSection === 'makeAppointment' && (
-                    <div className="make-appointment">
-                        <BookAppointment />
+                    <div className="booking-container">
+                        <div className="booking-header">
+                            <h2 className="booking-title">
+                                <i className="fas fa-calendar-plus"></i>
+                                Book an Appointment
+                            </h2>
+                            <p className="booking-subtitle">
+                                Schedule a virtual consultation with one of our specialists
+                            </p>
+                        </div>
+                        <div className="booking-content">
+                            <BookAppointment />
+                        </div>
                     </div>
                 )}
+                
+                {/* Patient history section */}
+                {role === 'patient' && activeSection === 'history' && (
+                    <div className="patient-history-section">
+                        <div className="patient-history-header">
+                            <h2 className="patient-history-title">
+                                <i className="fas fa-history"></i>
+                                Appointment History
+                            </h2>
+                            <div className="patient-history-filters">
+                                <div className="patient-history-filter active">All</div>
+                                <div className="patient-history-filter">This Month</div>
+                                <div className="patient-history-filter">Last 3 Months</div>
+                            </div>
+                        </div>
+                        <div className="patient-history-content">
+                            {pastAppointments?.length > 0 ? (
+                                <div className="patient-timeline">
+                                    {pastAppointments.map((record, index) => (
+                                        <div className="timeline-item" key={index}>
+                                            <div className="timeline-dot"></div>
+                                            <div className="timeline-content">
+                                                <div className="timeline-header">
+                                                    <div className="timeline-title">
+                                                        <i className="fas fa-user-md"></i>
+                                                        Appointment with Dr. {record.doctor}
+                                                    </div>
+                                                    <div className="timeline-date">
+                                                        <i className="far fa-calendar-alt"></i>
+                                                        {new Date(record.start).toLocaleDateString()}
+                                                    </div>
+                                                </div>
+                                                <div className="timeline-details">
+                                                    <div className="timeline-detail">
+                                                        <div className="timeline-label">Symptoms</div>
+                                                        <div className="timeline-value">{record.symptoms || "None recorded"}</div>
+                                                    </div>
+                                                    <div className="timeline-detail">
+                                                        <div className="timeline-label">Time</div>
+                                                        <div className="timeline-value">
+                                                            {new Date(record.start).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - 
+                                                            {new Date(record.end).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                                        </div>
+                                                    </div>
+                                                    <div className="timeline-detail">
+                                                        <div className="timeline-label">Notes</div>
+                                                        <div className="timeline-value">{record.notes || "No additional notes"}</div>
+                                                    </div>
+                                                </div>
+                                                <div className="timeline-actions">
+                                                    <button className="timeline-btn view-details-btn">
+                                                        <i className="fas fa-eye"></i> View Details
+                                                    </button>
+                                                    <button className="timeline-btn reschedule-btn">
+                                                        <i className="fas fa-redo"></i> Book Again
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="empty-appointments">
+                                    <div className="empty-icon">
+                                        <i className="fas fa-calendar-times"></i>
+                                    </div>
+                                    <p className="empty-text">You don't have any past appointments</p>
+                                    <button className="book-now-btn" onClick={() => setActiveSection('makeAppointment')}>
+                                        <i className="fas fa-plus"></i> Book Your First Appointment
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+                
                 {role === 'patient' && activeSection === 'history' && (
                     <table className="history-table">
                         <thead>
@@ -552,9 +708,13 @@ const DoctorDashboard = () => {
                         </tbody>
                     </table>
                 )}
+                
                 {role === 'doctor' && activeSection === 'feedback' && (
                     <div className="feedback-section">
-                        <h3>Submit Feedback</h3>
+                        <h3>
+                            <i className="fas fa-comment-alt"></i>
+                            Submit Feedback
+                        </h3>
                         <textarea
                             value={feedback}
                             onChange={(e) => setFeedback(e.target.value)}
