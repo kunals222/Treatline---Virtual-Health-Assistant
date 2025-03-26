@@ -269,7 +269,7 @@ const Service = () => {
                 </p>
               </div>
               <div className="testimonial-author">
-                <img src="/images/doctor-1.jpg" alt="Dr. Sarah Johnson" />
+                <img src="https://img.freepik.com/premium-photo/beautiful-smiling-female-doctor-stand-office_151013-12509.jpg?w=2000" alt="Dr. Sarah Johnson" />
                 <div>
                   <h4>Dr. Sarah Johnson</h4>
                   <p>Cardiologist, Boston Medical Center</p>
@@ -286,7 +286,7 @@ const Service = () => {
                 </p>
               </div>
               <div className="testimonial-author">
-                <img src="/images/doctor-2.jpg" alt="Dr. Michael Chen" />
+                <img src="http://www.pngall.com/wp-content/uploads/2018/05/Doctor-PNG-File-Download-Free.png" alt="Dr. Michael Chen" />
                 <div>
                   <h4>Dr. Michael Chen</h4>
                   <p>Pediatrician, Children's Health Clinic</p>
@@ -303,7 +303,7 @@ const Service = () => {
                 </p>
               </div>
               <div className="testimonial-author">
-                <img src="/images/doctor-3.jpg" alt="Dr. Lisa Rodriguez" />
+                <img src="https://leman-clinic.ch/wp-content/uploads/2018/11/02.jpg" alt="Dr. Lisa Rodriguez" />
                 <div>
                   <h4>Dr. Lisa Rodriguez</h4>
                   <p>Family Medicine, Community Health Partners</p>

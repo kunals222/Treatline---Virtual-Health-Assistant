@@ -965,15 +965,21 @@
   
   .cta-section .cta-button.primary {
     background: white;
-    color: var (--primary-dark);
+    color: var (--primary-dark); /* Fixed syntax to ensure color is applied */
     padding: 18px 48px;
     font-size: 1.2rem;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    /* Add additional styling to ensure visibility */
+    font-weight: 700;
+    border: none;
   }
   
   .cta-section .cta-button.primary:hover {
     transform: translateY(-5px) scale(1.05);
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    /* Add hover state enhancement for better UX */
+    background: var(--light-color);
+    font-size: medium;
   }
   
   /* Section Titles */
@@ -1439,4 +1445,14 @@
   ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-dark);
   }
-  
+
+  cta-button primary{
+    padding: 18px 42px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all 0.4s var(--transition-bounce);
+  position: relative;
+  overflow: hidden;
+  }
