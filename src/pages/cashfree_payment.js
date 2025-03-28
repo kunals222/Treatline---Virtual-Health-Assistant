@@ -1,22 +1,20 @@
 import { useState } from 'react'
 import axios from "axios"
-
-
-
 import { load } from '@cashfreepayments/cashfree-js'
 
 
-function CashfreePayment() {
+function CashFree() {
 
     let cashfree; 
+    
     let insitialzeSDK = async function () {
         cashfree = await load({
             mode: "sandbox",
         })
     }
     
-    
     insitialzeSDK()
+    
     
     const [orderId, setOrderId] = useState("")
     
@@ -33,13 +31,16 @@ function CashfreePayment() {
         }
     }
     
+    
     const verifyPayment = async () => {
         try {
             let res = await axios.post("https://cashfreepayment-seven.vercel.app/verify", {
                 orderId: orderId
             })
+            
             if (res && res.data) {
                 alert("payment verified")
+                
             }
         } catch (error) {
             console.log(error)
@@ -54,21 +55,16 @@ function CashfreePayment() {
                 paymentSessionId: sessionId,
                 redirectTarget: "_modal",
             }
+            
             cashfree.checkout(checkoutOptions).then((res) => {
                 console.log("payment initialized")
-                verifyPayment(orderId)
-
-
-                // redirect to the second window of payment
-
                 
+                verifyPayment(orderId)
             })
         } catch (error) {
             console.log(error)
         }
     }
-
-
     return (
         <><h1>Cashfree payment getway</h1>
             <div className="card">
@@ -76,7 +72,4 @@ function CashfreePayment() {
                     Pay now
                 </button></div></>
     )
-} 
-
-
-export default CashfreePayment
+} export default CashFree

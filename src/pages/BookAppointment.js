@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAvailableDoctors, bookAppointment } from '../redux/slices/appointmentSlice';
 import '../styles/BookAppointment.css';
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer, toast } from 'react-toastify';
+import CashFree  from './cashfree_payment';
 
 const symptomsList = [
     "Abdominal Pain", "Acid Reflux", "Acne", "Agitation", "Allergic Reaction", "Anemia", "Anxiety", "Apathy",
@@ -139,6 +139,8 @@ const BookAppointment = () => {
     const dispatch = useDispatch();
     const { availableDoctors, loading, error, priority_score } = useSelector((state) => state.appointments);
 
+    
+
     const timeSlots = [
         '0:00 - 3:00',
         '3:00 - 6:00',
@@ -150,9 +152,13 @@ const BookAppointment = () => {
         '21:00 - 24:00'
     ];
 
+
+    
+
     const handleChange = (e) => {
         const value = e.target.value;
-        setSymptoms(value);
+        
+       
 
         const lastEntry = value.split(",").pop().trim(); // Get last typed word
         if (lastEntry) {
@@ -207,16 +213,22 @@ const BookAppointment = () => {
     // };
 
     const handleBookAppointment = (doctorId) => {
+        
+        <CashFree/>
 
         const timeSlot = timeSlots.indexOf(selectedSlot);
+        // CashfreePayment.handleClick();
         dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language })).unwrap()
             .then(() => {
+                <CashFree/>
                 console.log('Appointment booked successfully!');
             })
             .catch((err) => {
                 console.error('Failed to book appointment:', err);
             });
     };
+
+
 
     return (
         <div className="book-appointment-container">
@@ -306,6 +318,7 @@ const BookAppointment = () => {
                                     <p><strong>Years of Experience:</strong> {doctor.years_of_experience}</p>
                                     <p><strong>Medical Registration ID:</strong> {doctor.medical_registration_id}</p>
                                     <button onClick={() => handleBookAppointment(doctor._id)} className="book-button">Book Appointment</button>
+                                    
                                 </div>
                             ))}
                         </div>
@@ -317,5 +330,9 @@ const BookAppointment = () => {
         </div>
     );
 };
+
+
+
+
 
 export default BookAppointment;
