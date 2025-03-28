@@ -3,7 +3,11 @@ import axios from 'axios';
 
 // Create an instance of axios with default settings
 const api = axios.create({
+<<<<<<< HEAD
   //baseURL: 'http://localhost:5000/api',
+=======
+  // baseURL: 'http://localhost:5000/api',
+>>>>>>> dae7b53 (deploy webrtc)
   baseURL: 'https://treatline-vha-backend.vercel.app/api',  // Update with your backend URL
   headers: {
     'Content-Type': 'application/json',
