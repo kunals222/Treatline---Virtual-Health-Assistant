@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../redux/slices/authSlice';
 import '../styles/DoctorRegistration.css';
+import logo from '../assets/logo1.png';
+import Footer from '../components/Footer';
 
 const specialists = [
     'Psychiatrist', 'ENT Specialist', 'Endocrinologist', 'Urologist',
@@ -146,160 +148,167 @@ const DoctorRegistration = () => {
     };
 
     return (
-        <div className="registration-container">
-            <div className="registration-card">
-                <h2>Doctor Registration</h2>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="name">Name</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder="Enter your full name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                    />
-
-                    <label htmlFor="email">Email</label>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="Enter your email address"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                    />
-
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        required
-                    />
-
-                    <label htmlFor="specialistDegree">Specialist Degree</label>
-                    <input
-                        type="text"
-                        id="specialistDegree"
-                        name="specialistDegree"
-                        placeholder="Enter your specialist degree"
-                        value={formData.specialistDegree}
-                        onChange={handleInputChange}
-                        required
-                    />
-
-                    <label htmlFor="specialist">Specialist</label>
-                    <div className="specialist-dropdown">
+        <>
+            <div className="registration-container">
+                <div className="registration-card">
+                    <div className="branding">
+                        <img src={logo} alt="TreatLine" />
+                        <h1>TreatLine</h1>
+                    </div>
+                    <h2>Doctor Registration</h2>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="name">Name</label>
                         <input
                             type="text"
-                            id="specialist"
-                            name="specialist"
-                            value={selectedSpecialist}
-                            placeholder="Enter speciality"
-                            onChange={handleSpecialistChange}
-                            onFocus={() => setShowDropdown(true)} // Show dropdown on focus
-                            onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Hide dropdown on blur with delay
-                            autoComplete="off"
+                            id="name"
+                            name="name"
+                            placeholder="Enter your full name"
+                            value={formData.name}
+                            onChange={handleInputChange}
                             required
                         />
-                        {showDropdown && (
-                            <ul>
-                                {filteredSpecialists.map((specialist, index) => (
-                                    <li key={index} onClick={() => handleSpecialistSelect(specialist)}>
-                                        {specialist}
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
-                    {specialistError && <p className="error">{specialistError}</p>}
 
-                    <label htmlFor="languages">Languages</label>
-                    <input
-                        type="text"
-                        id="languages"
-                        name="languages"
-                        placeholder="Enter languages (comma-separated)"
-                        value={formData.languages}
-                        onChange={handleInputChange}
-                        required
-                    />
+                        <label htmlFor="email">Email</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="Enter your email address"
+                            value={formData.email}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                    <label htmlFor="experience">Years of Experience</label>
-                    <input
-                        type="number"
-                        id="experience"
-                        name="experience"
-                        placeholder="Enter your years of experience"
-                        value={formData.experience}
-                        onChange={handleInputChange}
-                        required
-                    />
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            value={formData.password}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                    <label htmlFor="phone">Phone</label>
-                    <input
-                        type="text"
-                        id="phone"
-                        name="phone"
-                        placeholder="Enter your phone number"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                    />
+                        <label htmlFor="specialistDegree">Specialist Degree</label>
+                        <input
+                            type="text"
+                            id="specialistDegree"
+                            name="specialistDegree"
+                            placeholder="Enter your specialist degree"
+                            value={formData.specialistDegree}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                    <label htmlFor="medical_registration_id">Medical Registration ID</label>
-                    <input
-                        type="text"
-                        id="medical_registration_id"
-                        name="medical_registration_id"
-                        placeholder="Enter your medical registration ID"
-                        value={formData.medical_registration_id}
-                        onChange={handleInputChange}
-                        required
-                    />
+                        <label htmlFor="specialist">Specialist</label>
+                        <div className="specialist-dropdown">
+                            <input
+                                type="text"
+                                id="specialist"
+                                name="specialist"
+                                value={selectedSpecialist}
+                                placeholder="Enter speciality"
+                                onChange={handleSpecialistChange}
+                                onFocus={() => setShowDropdown(true)} // Show dropdown on focus
+                                onBlur={() => setTimeout(() => setShowDropdown(false), 200)} // Hide dropdown on blur with delay
+                                autoComplete="off"
+                                required
+                            />
+                            {showDropdown && (
+                                <ul>
+                                    {filteredSpecialists.map((specialist, index) => (
+                                        <li key={index} onClick={() => handleSpecialistSelect(specialist)}>
+                                            {specialist}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                        {specialistError && <p className="error">{specialistError}</p>}
 
-                    <label htmlFor="profile_image">Profile Image</label>
-                    <input
-                        type="file"
-                        id="profile_image"
-                        name="profile_image"
-                        accept="image/*"
-                        onChange={handleInputChange}
-                    />
+                        <label htmlFor="languages">Languages</label>
+                        <input
+                            type="text"
+                            id="languages"
+                            name="languages"
+                            placeholder="Enter languages (comma-separated)"
+                            value={formData.languages}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                    <label htmlFor="medical_license">Medical License</label>
-                    <input
-                        type="file"
-                        id="medical_license"
-                        name="medical_license"
-                        accept=".pdf,.jpg,.png"
-                        onChange={handleInputChange}
-                        required
-                    />
+                        <label htmlFor="experience">Years of Experience</label>
+                        <input
+                            type="number"
+                            id="experience"
+                            name="experience"
+                            placeholder="Enter your years of experience"
+                            value={formData.experience}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                    <label htmlFor="certificates">Certificates</label>
-                    <input
-                        type="file"
-                        id="certificates"
-                        name="certificates"
-                        accept=".pdf,.jpg,.png"
-                        multiple
-                        onChange={handleInputChange}
-                    />
+                        <label htmlFor="phone">Phone</label>
+                        <input
+                            type="text"
+                            id="phone"
+                            name="phone"
+                            placeholder="Enter your phone number"
+                            value={formData.phone}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                    {loading && <p>Registering...</p>}
-                    {error && <p className="error">{typeof error === 'string' ? error : JSON.stringify(error)}</p>}
+                        <label htmlFor="medical_registration_id">Medical Registration ID</label>
+                        <input
+                            type="text"
+                            id="medical_registration_id"
+                            name="medical_registration_id"
+                            placeholder="Enter your medical registration ID"
+                            value={formData.medical_registration_id}
+                            onChange={handleInputChange}
+                            required
+                        />
 
-                    <button type="submit">Register</button>
-                </form>
+                        <label htmlFor="profile_image">Profile Image</label>
+                        <input
+                            type="file"
+                            id="profile_image"
+                            name="profile_image"
+                            accept="image/*"
+                            onChange={handleInputChange}
+                        />
+
+                        <label htmlFor="medical_license">Medical License</label>
+                        <input
+                            type="file"
+                            id="medical_license"
+                            name="medical_license"
+                            accept=".pdf,.jpg,.png"
+                            onChange={handleInputChange}
+                            required
+                        />
+
+                        <label htmlFor="certificates">Certificates</label>
+                        <input
+                            type="file"
+                            id="certificates"
+                            name="certificates"
+                            accept=".pdf,.jpg,.png"
+                            multiple
+                            onChange={handleInputChange}
+                        />
+
+                        {loading && <p>Registering...</p>}
+                        {error && <p className="error">{typeof error === 'string' ? error : JSON.stringify(error)}</p>}
+
+                        <button type="submit">Register</button>
+                    </form>
+                </div>
             </div>
-        </div>
+            <Footer />
+        </>
     );
 };
 

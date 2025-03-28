@@ -168,13 +168,16 @@ const DoctorDashboard = () => {
                             <span>Manage Availability</span>
                         </button>
                         <button onClick={() => setActiveSection('profile')} className={activeSection === 'profile' ? 'active' : ''}>
-                            <i className="fas fa-user-md"></i>
-                            <span>Doctor Profile</span>
-                        </button>
+                        <i className="fas fa-user-md"></i>
+                        <span>Doctor Profile</span>
+                    </button>
+                        
                         <button onClick={() => setActiveSection('feedback')} className={activeSection === 'feedback' ? 'active' : ''}>
                             <i className="fas fa-comment-alt"></i>
                             <span>Feedback</span>
-                        </button>
+                        </button> 
+                        
+
                     </>
                 )}
                 {role === 'patient' && (
