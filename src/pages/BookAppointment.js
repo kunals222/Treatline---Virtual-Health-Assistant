@@ -3,13 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAvailableDoctors, bookAppointment } from '../redux/slices/appointmentSlice';
 import '../styles/BookAppointment.css';
 
+
 const BookAppointment = () => {
     const [symptoms, setSymptoms] = useState('');
     const [selectedSlot, setSelectedSlot] = useState('');
     const [language, setLanguage] = useState('');
     const [notes, setNotes] = useState('none');
     const dispatch = useDispatch();
-    const { availableDoctors, loading, error ,priority_score} = useSelector((state) => state.appointments);
+    const { availableDoctors, loading, error, priority_score } = useSelector((state) => state.appointments);
+
+
 
     const timeSlots = [
         '0:00 - 3:00',
@@ -27,11 +30,17 @@ const BookAppointment = () => {
         dispatch(fetchAvailableDoctors({ symptoms, timeSlot, language }));
     };
 
+    // const goToCashfree = () => {
+    //     navigate('/CashfreePayment'); // Navigate to ScreenB
+    // };
+
     const handleBookAppointment = (doctorId) => {
-        
+
         const timeSlot = timeSlots.indexOf(selectedSlot);
         console.log({ doctorId, symptoms, selectedSlot, priority_score, language, notes });
         dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language, notes }));
+
+        // goToCashfree(); // Call the function to navigate to ScreenB
     };
 
     return (

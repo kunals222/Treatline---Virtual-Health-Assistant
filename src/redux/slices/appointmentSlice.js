@@ -21,10 +21,17 @@ export const fetchAvailableDoctors = createAsyncThunk('appointments/fetchAvailab
   }
 });
 
+
+
 // Book an appointment
 export const bookAppointment = createAsyncThunk('appointments/bookAppointment', async (appointmentData, { rejectWithValue }) => {
   try {
     const response = await api.post('/appointments/book', appointmentData);
+
+    // first window of the payment is started ......
+    
+
+
     return response.data;
   } catch (err) {
     return rejectWithValue(err.response.data);
