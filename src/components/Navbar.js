@@ -5,7 +5,6 @@ import { logout } from '../redux/slices/authSlice';
 import logo from '../assets/logo1.png';
 import '../styles/Navbar.css';
 import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
