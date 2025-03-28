@@ -89,10 +89,10 @@ const BookAppointment = () => {
 
             {loading && <p>Loading...</p>}
             {error && <p className="error">{typeof error === 'string' ? error : JSON.stringify(error)}</p>}
-
+            <h3>Available Doctors</h3>
             {availableDoctors?.length > 0 && (
                 <div className="doctor-list">
-                    <h3>Available Doctors</h3>
+                    
                     {availableDoctors?.map((doctor) => (
                         <div key={doctor._id} className="doctor-card">
                             <img src={doctor.profile_image} alt={`${doctor.name}'s profile`} className="doctor-profile-image" />
