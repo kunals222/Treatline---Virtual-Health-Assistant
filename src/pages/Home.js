@@ -23,7 +23,7 @@ const Home = () => {
         );
 
         // Observe all animated elements
-        document.querySelectorAll('.feature-card, .testimonial-card, .faq-item, .step, .stat').forEach(
+        document.querySelectorAll('.feature-card, .testimonial-card, .faq-item, .step, .stat, .ad-card').forEach(
             element => observer.observe(element)
         );
 
@@ -77,6 +77,126 @@ const Home = () => {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </section>
+
+                <section className="ads-section">
+                    <h2 className="section-title">Featured Medicines</h2>
+                    <div className="ads-carousel">
+                        {[
+                            {
+                                title: "Paracetamol Tablets",
+                                price: 5.99,
+                                originalPrice: 7.99,
+                                image: "https://5.imimg.com/data5/GE/SV/CY/SELLER-2086004/paracetamol-650mg-1000x1000.jpg",
+                                description: "Fever and pain relief medicine.",
+                                discount: "-25%",
+                                shopLink: "https://amzn.in/d/9K5f48d"
+                            },
+                            {
+                                title: "Ibuprofen 200mg",
+                                price: 6.99,
+                                originalPrice: 8.99,
+                                image: "https://images.heb.com/is/image/HEBGrocery/001011791?fit=constrain,1&wid=800&hei=800&fmt=jpg&qlt=85,0&resMode=sharp2&op_usm=1.75,0.3,2,0",
+                                description: "Anti-inflammatory pain reliever.",
+                                discount: "-20%",
+                                shopLink: "https://www.heb.com/product-detail/h-e-b-ibuprofen-200-mg-coated-tablets-value-pack/1011791"
+                            },
+                            {
+                                title: "Cough Syrup",
+                                price: 4.99,
+                                originalPrice: 6.99,
+                                image: "https://cdn01.pharmeasy.in/dam/products/022615/benadryl-cough-formula-bottle-of-150ml-syrup-front-2-1626077003.jpg",
+                                description: "Relieves cough and throat irritation.",
+                                discount: "-30%",
+                                shopLink: "Checkout Benadryl Cough Formula Bottle ... at 24% discount  on Pharmeasy - https://pharmeasy.in/online-medicine-order/benadryl-cough-formula-bottle-of-150ml-syrup-37060?utm_source=pharmeasy&utm_medium=desktop&utm_campaign=pdp_share"
+                            },
+                            {
+                                title: "Vitamin C Tablets",
+                                price: 9.99,
+                                originalPrice: 12.99,
+                                image: "https://www.naturesaid.co.uk/images/natures-aid-vitamin-c-500mg-chewable-p244-1115_medium.jpg",
+                                description: "Boosts immunity and overall health.",
+                                discount: "-20%",
+                                shopLink: "https://www.naturesaid.co.uk/vitamins-supplements-c10/vitamins-c18/vitamin-c-500mg-chewable-p244"
+                            },
+                            {
+                                title: "Antacid Gel",
+                                price: 7.99,
+                                originalPrice: 9.99,
+                                image: "https://cdn01.pharmeasy.in/dam/products_otc/I02813/polycrol-xpress-relief-antacid-gel-sugar-free-mint-flavour-200ml-2-1610016946.jpg",
+                                description: "For quick relief from acidity and heartburn.",
+                                discount: "-15%",
+                                shopLink: "Checkout Polycrol Xpress Relief From Ac... at 20% discount  on Pharmeasy - https://pharmeasy.in/health-care/products/polycrol-xpress-relief-antacid-gel-sugar-free---mint-flavour---200ml-169220?utm_source=pharmeasy&utm_medium=desktop&utm_campaign=pdp_share"
+                            },
+                            {
+                                title: "Omron BP Monitor",
+                                price: 89.99,
+                                originalPrice: 99.99,
+                                image: "https://cdn11.bigcommerce.com/s-g87097e/images/stencil/2560w/products/77/2078/omron-m6-comfort-hem-7360-e-min__46912.1599851749.png?c=2",
+                                description: "Digital Blood Pressure Monitor",
+                                discount: "-10%",
+                                shopLink: "https://www.foursquare-healthcare.co.uk/omron-m7-intelli-it-afib-blood-pressure-monitor-hem-7380t1-ebk/"
+                            },
+                            {
+                                title: "Pulse Oximeter",
+                                price: 29.99,
+                                originalPrice: 34.99,
+                                image: "https://images-na.ssl-images-amazon.com/images/G/01/aplusautomation/vendorimages/806fd110-2270-43bd-924b-9a35dab5c167.jpg._CB282523961_.jpg",
+                                description: "Digital Fingertip Pulse Oximeter",
+                                discount: "-15%",
+                                shopLink: "https://a.co/d/4pDF50o"
+                            },
+                            {
+                                title: "First Aid Kit",
+                                price: 39.99,
+                                originalPrice: 44.99,
+                                image: "https://i5.walmartimages.com/asr/0d193d70-8f4d-4c2a-af9a-3083727cea86.1f3ddff1341fc7c7e7b57214a38a3e01.jpeg",
+                                description: "300-Piece First Aid Emergency Kit",
+                                discount: "New",
+                                shopLink: "https://www.walmart.com/ip/Johnson-Johnson-First-Aid-To-Go-Portable-Mini-Travel-Kit-12-pieces/10801432"
+                            },
+                            {
+                                title: "Digital Thermometer",
+                                price: 19.99,
+                                originalPrice: 24.99,
+                                image: "https://www.alphascales.in/wp-content/uploads/2022/03/digiral-thermometer-6-scaled.jpg",
+                                description: "Infrared Digital Thermometer",
+                                discount: "-20%",
+                                shopLink: "https://www.alphascales.in/product/digital-thermometer-srs720/"
+                            },
+                            {
+                                title: "Nebulizer Machine",
+                                price: 59.99,
+                                originalPrice: 69.99,
+                                image: "https://m.media-amazon.com/images/S/aplus-media/vc/0d0c9df5-d55c-4609-a1d3-d4e3612dcb29.jpg",
+                                description: "Portable Nebulizer Machine",
+                                discount: "-15%",
+                                shopLink: "https://amzn.eu/d/2UXcPXq"
+                            }
+                        ].map((product, index) => (
+                            <div key={index} className="ad-card slide-in" style={{animationDelay: `${index * 0.1}s`}}>
+                                <div className="ad-image">
+                                    <img src={product.image} alt={product.title} />
+                                    <div className="discount-badge">{product.discount}</div>
+                                </div>
+                                <div className="ad-content">
+                                    <h3>{product.title}</h3>
+                                    <p className="price">
+                                        Rs {product.price}
+                                        <span className="original-price">${product.originalPrice}</span>
+                                    </p>
+                                    <p className="description">{product.description}</p>
+                                    <a href={product.shopLink} target="_blank" rel="noopener noreferrer" className="shop-now-btn">
+                                        Shop Now
+                                    </a>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className="scroll-buttons">
+                        <button className="scroll-btn prev" onClick={() => document.querySelector('.ads-carousel').scrollBy(-300, 0)}>❮</button>
+                        <button className="scroll-btn next" onClick={() => document.querySelector('.ads-carousel').scrollBy(300, 0)}>❯</button>
                     </div>
                 </section>
 
