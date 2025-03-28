@@ -135,17 +135,10 @@ const BookAppointment = () => {
     const [language, setLanguage] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [focusedIndex, setFocusedIndex] = useState(-1);
-    const [showResults, setShowResults] = useState(false); // State to toggle visibility
+    const [showResults, setShowResults] = useState(false);
     const dispatch = useDispatch();
-<<<<<<< HEAD
     const { availableDoctors, loading, error, priority_score } = useSelector((state) => state.appointments);
 
-
-
-=======
-    const { availableDoctors, loading, error ,priority_score} = useSelector((state) => state.appointments);
-    
->>>>>>> 9be04bec011d9f4aead00e6133dcb84d7b8ca2e8
     const timeSlots = [
         '0:00 - 3:00',
         '3:00 - 6:00',
@@ -216,13 +209,6 @@ const BookAppointment = () => {
     const handleBookAppointment = (doctorId) => {
 
         const timeSlot = timeSlots.indexOf(selectedSlot);
-<<<<<<< HEAD
-        console.log({ doctorId, symptoms, selectedSlot, priority_score, language, notes });
-        dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language, notes }));
-
-        // goToCashfree(); // Call the function to navigate to ScreenB
-=======
-        // console.log({ doctorId, symptoms, selectedSlot, priority_score, language, notes });
         dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language })).unwrap()
             .then(() => {
                 console.log('Appointment booked successfully!');
@@ -230,7 +216,6 @@ const BookAppointment = () => {
             .catch((err) => {
                 console.error('Failed to book appointment:', err);
             });
->>>>>>> 9be04bec011d9f4aead00e6133dcb84d7b8ca2e8
     };
 
     return (

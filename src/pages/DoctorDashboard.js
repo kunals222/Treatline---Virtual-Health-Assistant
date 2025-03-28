@@ -73,7 +73,7 @@ const DoctorDashboard = () => {
     };
 
     const handleJoinMeeting = (appointmentId) => {
-        const meetingUrl = `http://localhost:4000/${appointmentId}`;
+        const meetingUrl = `https://treatline.duckdns.org/${appointmentId}`;
         window.open(meetingUrl, '_blank');
     };
 
