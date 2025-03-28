@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../redux/slices/authSlice';
 import logo from '../assets/logo1.png';
 import '../styles/Navbar.css';
-
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -135,6 +136,7 @@ const Navbar = () => {
                     </>
                 )}
             </div>
+            <ToastContainer position="top-right" autoClose={3000} />
             <button className="navbar-toggle" onClick={toggleNavbar}>
                 {isOpen ? '✕' : '☰'}
             </button>

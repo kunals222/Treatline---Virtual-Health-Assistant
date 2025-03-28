@@ -5,6 +5,8 @@ import PatientProfile from './PatientProfile.js';
 import BookAppointment from './BookAppointment.js';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchDoctorProfile, updateDoctorSchedule, fetchAppointments, fetchPatientDetails, submitFeedback } from '../redux/slices/authSlice';
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 
 const DoctorDashboard = () => {
     const [activeSection, setActiveSection] = useState('scheduled');
@@ -50,11 +52,23 @@ const DoctorDashboard = () => {
 
     const handleScheduleUpdate = () => {
         const updatedTimeSlot = timeSlots.map((slot) => (selectedSlots.includes(slot) ? 1 : 0));
-        dispatch(updateDoctorSchedule(updatedTimeSlot));
+        dispatch(updateDoctorSchedule(updatedTimeSlot)).unwrap()
+            .then(() => {
+                toast.success('Schedule updated successfully!');
+            })
+            .catch((error) => {
+                toast.error('Failed to update schedule.');
+            });
     };
 
     const handleFeedbackSubmit = () => {
-        dispatch(submitFeedback({ feedback }));
+        dispatch(submitFeedback({ feedback })).unwrap()
+            .then(() => {
+                toast.success('Feedback submitted successfully!');
+            })
+            .catch((error) => {
+                toast.error('Failed to submit feedback.');
+            });
         setFeedback('');
     };
 
@@ -65,6 +79,7 @@ const DoctorDashboard = () => {
 
     return (
         <div className="dashboard">
+        <ToastContainer position="top-right" autoClose={3000} />
             <div className="sidebar">
                 {role === 'doctor' && (
                     <>
