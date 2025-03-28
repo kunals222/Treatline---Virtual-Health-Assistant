@@ -10,6 +10,8 @@ import Service from './components/Service'; // Import the Service component
 import PatientDashboard from './pages/PatientDashboard'; // Import PatientDashboard
 import Chatbot from './components/chatbot'; // Import Chatbot
 
+import FindDoctor from './pages/FindDoctor';
+
 const App = () => {
     return (
         <Router>
@@ -24,6 +26,7 @@ const App = () => {
                         <Route path="/dashboard" element={<DoctorDashboard />} />
                         <Route path="/service" element={<Service />} /> {/* Add route for Service component */}
                         <Route path="/patient/dashboard" element={<PatientDashboard />} /> {/* Add route for PatientDashboard component */}
+                        <Route path='/doctors' element={<FindDoctor/>}/>
                     </Routes>
                 </div>
                 <Chatbot /> {/* Add Chatbot component */}

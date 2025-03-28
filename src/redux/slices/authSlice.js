@@ -150,10 +150,20 @@ export const fetchAppointments = createAsyncThunk('auth/fetchAppointments', asyn
   }
 });
 
+export const fetchAllDoctors = createAsyncThunk('doctors/fetchAllDoctors', async (_, { rejectWithValue }) => {
+  try {
+    const response = await api.get('/doctors/find'); // Fetch all doctors
+    return response.data; // Return the list of doctors
+  } catch (err) {
+    return rejectWithValue(err.response.data); // Handle errors
+  }
+});
+
 const initialState = {
   user: JSON.parse(localStorage.getItem('userInfo')) || null,
   token: localStorage.getItem('token') || null,
   role: localStorage.getItem('role') || null,
+  doctors : [],
   loading: false,
   error: null,
 };
@@ -336,6 +346,20 @@ const authSlice = createSlice({
         state.pastAppointments = action.payload.pastAppointments;
       })
       .addCase(fetchAppointments.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Fetch all doctors
+      .addCase(fetchAllDoctors.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllDoctors.fulfilled, (state, action) => {
+        state.loading = false;
+        state.doctors = action.payload.doctors;
+      })
+      .addCase(fetchAllDoctors.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
