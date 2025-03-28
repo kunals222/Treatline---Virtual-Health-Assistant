@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import DoctorDashboard from './pages/DoctorDashboard';
 import Service from './components/Service'; // Import the Service component
 import PatientDashboard from './pages/PatientDashboard'; // Import PatientDashboard
+import FindDoctor from './pages/FindDoctor';
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                         <Route path="/dashboard" element={<DoctorDashboard />} />
                         <Route path="/service" element={<Service />} /> {/* Add route for Service component */}
                         <Route path="/patient/dashboard" element={<PatientDashboard />} /> {/* Add route for PatientDashboard component */}
+                        <Route path='/doctors' element={<FindDoctor/>}/>
                     </Routes>
                 </div>
             </div>

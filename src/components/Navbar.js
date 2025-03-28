@@ -93,7 +93,7 @@ const Navbar = () => {
             return (
                 <>
                     <Link to="/">Home</Link>
-                    <Link to="/doctors">Find Doctors</Link>
+                    <Link to="/doctors">DoctorSearch</Link>
                     <Link to="/dashboard">Dashboard</Link>
                 </>
             );
