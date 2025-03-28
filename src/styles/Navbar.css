@@ -111,7 +111,7 @@
     transition: all var(--transition-speed) ease;
     font-weight: 500;
     letter-spacing: 0.3px;
-    overflow: hidden;
+    /* overflow: hidden; */
     z-index: 1;
 }
 
@@ -495,14 +495,7 @@
     gap: 10px;
 }
 
-.register-dropdown .dropdown-menu button:first-child::before {
-    content: '👨‍⚕️';
-}
 
-.register-dropdown .dropdown-menu button:last-child::before {
-    content: '🧑';
-    border-bottom: none;
-}
 
 .register-dropdown .dropdown-menu button:hover {
     background-color: var(--light-blue);
