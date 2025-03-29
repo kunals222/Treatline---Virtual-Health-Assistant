@@ -212,8 +212,6 @@ const BookAppointment = () => {
         setShowResults(true); // Show results section
     };
 
-    
-
     let cashfree; 
     
     let insitialzeSDK = async function () {
