@@ -1,75 +1,79 @@
-import { useState } from 'react'
-import axios from "axios"
-import { load } from '@cashfreepayments/cashfree-js'
+import React, { useEffect, useState } from 'react';
 
+const CashfreePayment = ({ orderDetails }) => {
+    const [paymentStatus, setPaymentStatus] = useState('pending');
 
-function CashFree() {
+    useEffect(() => {
+        const initializePayment = async () => {
+            try {
+                if (typeof window !== 'undefined') {
+                    const script = document.createElement('script');
+                    script.src = 'https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js';
+                    script.async = true;
+                    script.onload = () => {
+                        if (window.Cashfree) {
+                            const cashfree = new window.Cashfree({
+                                mode: "sandbox"
+                            });
+                            
+                            const paymentOptions = {
+                                appId: process.env.REACT_APP_CASHFREE_APP_ID,
+                                orderToken: orderDetails?.token,
+                                onSuccess: (data) => {
+                                    setPaymentStatus('success');
+                                    console.log("Payment success:", data);
+                                },
+                                onFailure: (data) => {
+                                    setPaymentStatus('failed');
+                                    console.log("Payment failure:", data);
+                                },
+                                components: {
+                                    card: {
+                                        instrument: {
+                                            card_number: "",
+                                            card_holder_name: "",
+                                            card_expiry_mm: "",
+                                            card_expiry_yy: "",
+                                            card_cvv: "",
+                                        }
+                                    }
+                                }
+                            };
+                            
+                            cashfree.checkout(paymentOptions);
+                        }
+                    };
+                    document.body.appendChild(script);
+                }
+            } catch (error) {
+                console.error("Payment initialization error:", error);
+                setPaymentStatus('error');
+            }
+        };
 
-    let cashfree; 
-    
-    let insitialzeSDK = async function () {
-        cashfree = await load({
-            mode: "sandbox",
-        })
-    }
-    
-    insitialzeSDK()
-    
-    
-    const [orderId, setOrderId] = useState("")
-    
-    const getSessionId = async () => {
-        try {
-            let res = await axios.get("https://cashfreepayment-seven.vercel.app/payment")
-            if (res.data && res.data.payment_session_id) {
-                console.log(res.data)
-                setOrderId(res.data.order_id)
-                return res.data.payment_session_id
-            }
-        } catch (error) {
-            console.log(error)
+        if (orderDetails?.token) {
+            initializePayment();
         }
-    }
-    
-    
-    const verifyPayment = async () => {
-        try {
-            let res = await axios.post("https://cashfreepayment-seven.vercel.app/verify", {
-                orderId: orderId
-            })
-            
-            if (res && res.data) {
-                alert("payment verified")
-                
+        
+        return () => {
+            const scriptElement = document.querySelector('script[src="https://sdk.cashfree.com/js/ui/2.0.0/cashfree.sandbox.js"]');
+            if (scriptElement) {
+                document.body.removeChild(scriptElement);
             }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-    
-    const handleClick = async (e) => {
-        e.preventDefault()
-        try {
-            let sessionId = await getSessionId()
-            let checkoutOptions = {
-                paymentSessionId: sessionId,
-                redirectTarget: "_modal",
-            }
-            
-            cashfree.checkout(checkoutOptions).then((res) => {
-                console.log("payment initialized")
-                
-                verifyPayment(orderId)
-            })
-        } catch (error) {
-            console.log(error)
-        }
-    }
+        };
+    }, [orderDetails]);
+
     return (
-        <><h1>Cashfree payment getway</h1>
-            <div className="card">
-                <button onClick={handleClick}>
-                    Pay now
-                </button></div></>
-    )
-} export default CashFree
+        <div className="payment-container">
+            <h2>Payment Processing</h2>
+            <div className="payment-status">
+                {paymentStatus === 'pending' && <p>Initializing payment gateway...</p>}
+                {paymentStatus === 'success' && <p>Payment successful!</p>}
+                {paymentStatus === 'failed' && <p>Payment failed. Please try again.</p>}
+                {paymentStatus === 'error' && <p>Error loading payment gateway. Please try again later.</p>}
+            </div>
+        </div>
+    );
+};
+
+export default CashfreePayment;

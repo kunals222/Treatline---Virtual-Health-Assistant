@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updatePatientProfile, fetchPatientDetails } from '../redux/slices/authSlice';
-import '../styles/Profile.css';
+import '../styles/PatientProfile.css';
 
 const PatientProfile = () => {
     const dispatch = useDispatch();
