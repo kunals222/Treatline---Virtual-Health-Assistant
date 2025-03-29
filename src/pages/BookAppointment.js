@@ -3,7 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchAvailableDoctors, bookAppointment } from '../redux/slices/appointmentSlice';
 import '../styles/BookAppointment.css';
 import 'react-toastify/dist/ReactToastify.css';
-import CashFree  from './cashfree_payment';
+// import CashFree  from './cashfree_payment';
+import { useNavigate } from 'react-router-dom';
+
+import axios from 'axios';
+import { load } from '@cashfreepayments/cashfree-js'
 
 const symptomsList = [
     "Abdominal Pain", "Acid Reflux", "Acne", "Agitation", "Allergic Reaction", "Anemia", "Anxiety", "Apathy",
@@ -139,7 +143,7 @@ const BookAppointment = () => {
     const dispatch = useDispatch();
     const { availableDoctors, loading, error, priority_score } = useSelector((state) => state.appointments);
 
-    
+    const navigate = useNavigate();
 
     const timeSlots = [
         '0:00 - 3:00',
@@ -158,7 +162,7 @@ const BookAppointment = () => {
     const handleChange = (e) => {
         const value = e.target.value;
         
-       
+         setSymptoms(value);
 
         const lastEntry = value.split(",").pop().trim(); // Get last typed word
         if (lastEntry) {
@@ -208,24 +212,81 @@ const BookAppointment = () => {
         setShowResults(true); // Show results section
     };
 
-    // const goToCashfree = () => {
-    //     navigate('/CashfreePayment'); // Navigate to ScreenB
-    // };
+    
+
+    let cashfree; 
+    
+    let insitialzeSDK = async function () {
+        cashfree = await load({
+            mode: "sandbox",
+        })
+    }
+    
+    insitialzeSDK()
+    
+    
+    const [orderId, setOrderId] = useState("")
+    
+    const getSessionId = async () => {
+        try {
+            let res = await axios.get("https://cashfreepayment-seven.vercel.app/payment")
+            if (res.data && res.data.payment_session_id) {
+                console.log(res.data)
+                setOrderId(res.data.order_id)
+                return res.data.payment_session_id
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
+    
+    const verifyPayment = async (doctorId) => {
+        try {
+            let res = await axios.post("https://cashfreepayment-seven.vercel.app/verify", {
+                orderId: orderId
+            });
+
+            console.log(res);
+
+            if (res && res.data[0].payment_status === "SUCCESS") {
+                alert("Payment verified");
+                const timeSlot = timeSlots.indexOf(selectedSlot);
+                // Pass doctorId to bookAppointment
+                dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language })).unwrap()
+                    .then(() => {
+                        alert('Appointment Query Raised successfully!');
+                    })
+                    .catch((err) => {
+                        alert('Failed to book appointment:', err);
+                    });
+                    setShowResults(false);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleClick = async (doctorId) => {
+        try {
+            let sessionId = await getSessionId();
+            let checkoutOptions = {
+                paymentSessionId: sessionId,
+                redirectTarget: "_modal",
+            };
+
+            cashfree.checkout(checkoutOptions).then((res) => {
+                console.log("Payment initialized");
+                // Pass doctorId to verifyPayment
+                verifyPayment(doctorId);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleBookAppointment = (doctorId) => {
-        
-        <CashFree/>
-
-        const timeSlot = timeSlots.indexOf(selectedSlot);
-        // CashfreePayment.handleClick();
-        dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language })).unwrap()
-            .then(() => {
-                <CashFree/>
-                console.log('Appointment booked successfully!');
-            })
-            .catch((err) => {
-                console.error('Failed to book appointment:', err);
-            });
+        handleClick(doctorId); // Pass doctorId to handleClick
     };
 
 

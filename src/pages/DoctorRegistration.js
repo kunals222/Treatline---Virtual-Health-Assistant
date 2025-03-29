@@ -5,6 +5,9 @@ import { registerUser } from '../redux/slices/authSlice';
 import '../styles/DoctorRegistration.css';
 import logo from '../assets/logo1.png';
 import Footer from '../components/Footer';
+import axios from 'axios';
+import { load } from '@cashfreepayments/cashfree-js'
+
 
 const specialists = [
     'Psychiatrist', 'ENT Specialist', 'Endocrinologist', 'Urologist',
@@ -46,6 +49,7 @@ const DoctorRegistration = () => {
         certificates: [],
         medical_license: null,
         specialist: '', // Add specialist to formData
+        sponsored: false, // Add sponsored field to formData
     });
 
     const [filteredSpecialists, setFilteredSpecialists] = useState(specialists);
@@ -58,9 +62,19 @@ const DoctorRegistration = () => {
     const { loading, error } = useSelector((state) => state.auth);
 
     const handleInputChange = (e) => {
-        const { name, value, files } = e.target;
+        const { name, value, files, type, checked } = e.target;
 
-        if (files) {
+        if (type === 'checkbox') {
+            // Handle checkbox input
+            setFormData({
+                ...formData,
+                [name]: checked,
+            });
+
+            if (name === 'sponsored' && checked) {
+                handleSponsoredClick(); // Automatically call handleSponsoredClick when checked
+            }
+        } else if (files) {
             // Handle multiple files for certificates
             if (name === 'certificates') {
                 setFormData({
@@ -80,6 +94,70 @@ const DoctorRegistration = () => {
             });
         }
     };
+
+    
+    let cashfree; 
+    
+    let insitialzeSDK = async function () {
+        cashfree = await load({
+            mode: "sandbox",
+        })
+    }
+    
+    insitialzeSDK()
+    
+    
+    const [orderId, setOrderId] = useState("")
+    
+    const getSessionId = async () => {
+        try {
+            let res = await axios.get("https://cashfreepayment-seven.vercel.app/payment")
+            if (res.data && res.data.payment_session_id) {
+                console.log(res.data)
+                setOrderId(res.data.order_id)
+                return res.data.payment_session_id
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    
+    
+    const verifyPayment = async (doctorId) => {
+        try {
+            let res = await axios.post("https://cashfreepayment-seven.vercel.app/verify", {
+                orderId: orderId
+            });
+
+            console.log(res);
+
+            if (res && res.data[0].payment_status === "SUCCESS") {
+                formData.sponsored = true;
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleSponsoredClick = async (doctorId) => {
+        try {
+            let sessionId = await getSessionId();
+            let checkoutOptions = {
+                paymentSessionId: sessionId,
+                redirectTarget: "_modal",
+            };
+
+            cashfree.checkout(checkoutOptions).then((res) => {
+                console.log("Payment initialized");
+                // Pass doctorId to verifyPayment
+                verifyPayment(doctorId);
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    
 
     const handleSpecialistChange = (e) => {
         const value = e.target.value;
@@ -121,6 +199,7 @@ const DoctorRegistration = () => {
         data.append('phone', formData.phone);
         data.append('medical_registration_id', formData.medical_registration_id);
         data.append('specialist', selectedSpecialist); // Add specialist to form data
+        data.append('sponsored', formData.sponsored); // Add sponsored field to form data
         
         // Profile Image
         if (formData.profile_image) {
@@ -299,6 +378,19 @@ const DoctorRegistration = () => {
                             multiple
                             onChange={handleInputChange}
                         />
+
+                        <label className="sponsored-container">
+                            <input
+                                type="checkbox"
+                                id="sponsored"
+                                name="sponsored"
+                                checked={formData.sponsored}
+                                onChange={handleInputChange}
+                            />
+                            <span className="custom-checkbox"></span>
+                            <span>Sponsored</span>
+                            <span className="sponsored-text">Optional</span>
+                        </label>
 
                         {loading && <p>Registering...</p>}
                         {error && <p className="error">{typeof error === 'string' ? error : JSON.stringify(error)}</p>}

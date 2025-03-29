@@ -11,6 +11,7 @@ import PatientDashboard from './pages/PatientDashboard'; // Import PatientDashbo
 import Chatbot from './components/chatbot'; // Import Chatbot
 
 import FindDoctor from './pages/FindDoctor';
+import CashFree from './pages/cashfree_payment';
 
 const App = () => {
     return (
@@ -27,6 +28,7 @@ const App = () => {
                         <Route path="/service" element={<Service />} /> {/* Add route for Service component */}
                         <Route path="/patient/dashboard" element={<PatientDashboard />} /> {/* Add route for PatientDashboard component */}
                         <Route path='/doctors' element={<FindDoctor/>}/>
+                        <Route path='/pay' element={<CashFree/>}/>
                     </Routes>
                 </div>
                 <Chatbot /> {/* Add Chatbot component */}
