@@ -10,7 +10,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import '../styles/Prescription.css';
 import { fetchPatientAppointments, savePrescription } from '../redux/slices/appointmentSlice.js';
 import jsPDF from 'jspdf';
+import QRCode from 'qrcode';
+// import 'jspdf-autotable';
 import { fetchAppointmentDetails } from '../redux/slices/appointmentSlice';
+import logoUrl from '../assets/logo1.png'; // Adjust the path to your logo image 
 
 const DoctorDashboard = () => {
     const [activeSection, setActiveSection] = useState('scheduled');
@@ -186,27 +189,118 @@ const DoctorDashboard = () => {
 
             // Generate PDF
             const doc = new jsPDF();
-            doc.setFontSize(16);
-            doc.text('TREATLINE PRESCRIPTION', 10, 10);
+
+            // Add TreatLine logo
+            
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+
+            
+
+            // Add TreatLine Logo
+            
+            doc.addImage(logoUrl, "PNG", 10, 10, 30, 30);
+
+            // Add title
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.setTextColor(30, 30, 30);
+            doc.text("E-Prescription by TreatLine", pageWidth / 2, 20, { align: "center" });
+
+            // Add subtitle
+            doc.setFont("helvetica", "italic");
+            doc.setFontSize(14);
+            doc.setTextColor(100, 100, 100);
+            doc.text("Smart Healthcare, Anywhere, Anytime", pageWidth / 2, 28, { align: "center" });
+
+            // Horizontal line
+            doc.setDrawColor(200, 200, 200);
+            doc.line(10, 40, pageWidth - 10, 40);
+
+            // Doctor & Patient Details
             doc.setFontSize(12);
-            doc.text(`Doctor: ${appointment.doctorName}`, 10, 20);
-            doc.text(`Patient: ${appointment.patientName}`, 10, 30);
-            doc.text(`Date: ${new Date(appointment.start).toLocaleDateString()}`, 10, 40);
-            doc.text('----------------------------------------', 10, 50);
+            doc.setTextColor(40, 40, 40);
+            doc.text(`Doctor: ${appointment.doctorName}`, 10, 50);
+            doc.text(`Patient: ${appointment.patientName}`, 10, 60);
+            doc.text(`Date: ${new Date(appointment.start).toLocaleDateString()}`, 10, 70);
+
+            // Prescription Table Headers
+            const startX = 10;
+            const startY = 80;
+            const rowHeight = 10;
+            const colWidths = [10, 60, 40, 40, 40]; // #, Medication, Dosage, Frequency, Duration
+
+            doc.setFontSize(12);
+            doc.setTextColor(255, 255, 255);
+            doc.setFillColor(22, 160, 133); // Header background color
+            doc.rect(startX, startY, pageWidth - 20, rowHeight, "F"); // Draw header background
+            doc.text("#", startX + 2, startY + 7);
+            doc.text("Medication", startX + colWidths[0] + 2, startY + 7);
+            doc.text("Dosage", startX + colWidths[0] + colWidths[1] + 2, startY + 7);
+            doc.text("Frequency", startX + colWidths[0] + colWidths[1] + colWidths[2] + 2, startY + 7);
+            doc.text("Duration", startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + 2, startY + 7);
+
+            // Prescription Table Rows
+            doc.setFontSize(10);
+            doc.setTextColor(0, 0, 0);
+            let currentY = startY + rowHeight;
 
             appointment.prescription.medications.forEach((medication, index) => {
-                const yPosition = 60 + index * 10;
-                doc.text(`Medication: ${medication.name}`, 10, yPosition);
-                doc.text(`Dosage: ${medication.dosage}`, 60, yPosition);
-                doc.text(`Frequency: ${medication.frequency}`, 110, yPosition);
-                doc.text(`Duration: ${medication.duration}`, 160, yPosition);
+                doc.text(`${index + 1}`, startX + 2, currentY + 7);
+                doc.text(medication.name, startX + colWidths[0] + 2, currentY + 7);
+                doc.text(medication.dosage, startX + colWidths[0] + colWidths[1] + 2, currentY + 7);
+                doc.text(medication.frequency, startX + colWidths[0] + colWidths[1] + colWidths[2] + 2, currentY + 7);
+                doc.text(medication.duration, startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + 2, currentY + 7);
+
+                // Row border
+                doc.setDrawColor(200, 200, 200);
+                doc.line(startX, currentY, pageWidth - 10, currentY);
+                currentY += rowHeight;
             });
 
-            doc.text('Special Instructions:', 10, 100);
-            doc.text(appointment.prescription.additionalInstructions || 'None', 10, 110);
+            // Draw bottom border of the table
+            doc.line(startX, currentY, pageWidth - 10, currentY);
 
-            // Download the PDF
-            doc.save(`prescription_${appointment.patientName.replace(/\s+/g, '_')}_${new Date(appointment.start).toLocaleDateString().replace(/\//g, '-')}.pdf`);
+            // Special Instructions
+            doc.setFontSize(12);
+            doc.setTextColor(40, 40, 40);
+            doc.text("Special Instructions:", 10, currentY + 10);
+            doc.setFontSize(10);
+            doc.setTextColor(80, 80, 80);
+            doc.text(appointment.prescription.additionalInstructions || "None", 10, currentY + 20);
+
+            // QR Code for Verification
+            const qrData = `https://treatline-virtual-health-assistant.vercel.app/appointment/verify/${appointmentId}`;
+            // const qrData = `http://localhost:3000/appointment/verify/${appointmentId}`;
+            const qrCodeImage = await QRCode.toDataURL(qrData);
+            doc.addImage(qrCodeImage, "PNG", pageWidth - 40, currentY + 5, 30, 30);
+            doc.setFontSize(8);
+            doc.setTextColor(120, 120, 120);
+            doc.text("Scan to Verify", pageWidth - 38, currentY + 40);
+
+            // Doctor's Signature Area
+            // doc.setFontSize(12);
+            // doc.setTextColor(40, 40, 40);
+            // doc.text("Doctor's Signature:", 10, pageHeight - 40);
+            // doc.line(50, pageHeight - 40, 150, pageHeight - 40);
+
+            // Footer with branding & validation
+            doc.setFontSize(10);
+            doc.setTextColor(150, 150, 150);
+            doc.text(
+                "This is a digital prescription generated via TreatLine. It is legally valid for medical use. For emergencies, visit the nearest hospital.",
+                pageWidth / 2,
+                pageHeight - 20,
+                { align: "center" }
+            );
+            doc.text("www.treatline.com | Support: +91-XXXX-XXXXX", pageWidth / 2, pageHeight - 10, { align: "center" });
+
+            // Save the PDF
+            doc.save(
+                `prescription_${appointment.patientName.replace(/\s+/g, "_")}_${new Date(appointment.start)
+                    .toLocaleDateString()
+                    .replace(/\//g, "-")}.pdf`
+            );
             toast.success('Prescription downloaded successfully!');
         } catch (error) {
             console.error('Error fetching prescription:', error);
