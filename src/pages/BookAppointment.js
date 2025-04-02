@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAvailableDoctors, bookAppointment } from '../redux/slices/appointmentSlice';
+import { fetchAvailableDoctors } from '../redux/slices/appointmentSlice';
 import '../styles/BookAppointment.css';
 import 'react-toastify/dist/ReactToastify.css';
 // import CashFree  from './cashfree_payment';
 import { useNavigate } from 'react-router-dom';
-
-import axios from 'axios';
-import { load } from '@cashfreepayments/cashfree-js'
 
 const symptomsList = [
     "Abdominal Pain", "Acid Reflux", "Acne", "Agitation", "Allergic Reaction", "Anemia", "Anxiety", "Apathy",
@@ -141,7 +138,7 @@ const BookAppointment = () => {
     const [focusedIndex, setFocusedIndex] = useState(-1);
     const [showResults, setShowResults] = useState(false);
     const dispatch = useDispatch();
-    const { availableDoctors, loading, error, priority_score } = useSelector((state) => state.appointments);
+    const { availableDoctors, loading, error} = useSelector((state) => state.appointments);
 
     const navigate = useNavigate();
 
@@ -212,80 +209,90 @@ const BookAppointment = () => {
         setShowResults(true); // Show results section
     };
 
-    let cashfree; 
+    // let cashfree; 
     
-    let insitialzeSDK = async function () {
-        cashfree = await load({
-            mode: "sandbox",
-        })
-    }
+    // let insitialzeSDK = async function () {
+    //     cashfree = await load({
+    //         mode: "sandbox",
+    //     })
+    // }
     
-    insitialzeSDK()
-    
-    
-    const [orderId, setOrderId] = useState("")
-    
-    const getSessionId = async () => {
-        try {
-            let res = await axios.get("https://cashfreepayment-seven.vercel.app/payment")
-            if (res.data && res.data.payment_session_id) {
-                console.log(res.data)
-                setOrderId(res.data.order_id)
-                return res.data.payment_session_id
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
+    // insitialzeSDK()
     
     
-    const verifyPayment = async (doctorId) => {
-        try {
-            let res = await axios.post("https://cashfreepayment-seven.vercel.app/verify", {
-                orderId: orderId
-            });
+    // const [orderId, setOrderId] = useState("")
+    
+    // const getSessionId = async () => {
+    //     try {
+    //         let res = await axios.get("https://cashfreepayment-seven.vercel.app/payment")
+    //         if (res.data && res.data.payment_session_id) {
+    //             console.log(res.data)
+    //             setOrderId(res.data.order_id)
+    //             return res.data.payment_session_id
+    //         }
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+    
+    
+    // const verifyPayment = async (doctorId) => {
+    //     try {
+    //         let res = await axios.post("https://cashfreepayment-seven.vercel.app/verify", {
+    //             orderId: orderId
+    //         });
 
-            console.log(res);
+    //         console.log(res);
 
-            if (res && res.data[0].payment_status === "SUCCESS") {
-                alert("Payment verified");
-                const timeSlot = timeSlots.indexOf(selectedSlot);
-                // Pass doctorId to bookAppointment
-                dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language })).unwrap()
-                    .then(() => {
-                        alert('Appointment Query Raised successfully!');
-                    })
-                    .catch((err) => {
-                        alert('Failed to book appointment:', err);
-                    });
-                    setShowResults(false);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    //         if (res && res.data[0].payment_status === "SUCCESS") {
+    //             alert("Payment verified");
+    //             const timeSlot = timeSlots.indexOf(selectedSlot);
+    //             // Pass doctorId to bookAppointment
+    //             dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language })).unwrap()
+    //                 .then(() => {
+    //                     alert('Appointment Query Raised successfully!');
+    //                 })
+    //                 .catch((err) => {
+    //                     alert('Failed to book appointment:', err);
+    //                 });
+    //                 setShowResults(false);
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
-    const handleClick = async (doctorId) => {
-        try {
-            let sessionId = await getSessionId();
-            let checkoutOptions = {
-                paymentSessionId: sessionId,
-                redirectTarget: "_modal",
-            };
+    // const handleClick = async (doctorId) => {
+    //     try {
+    //         let sessionId = await getSessionId();
+    //         let checkoutOptions = {
+    //             paymentSessionId: sessionId,
+    //             redirectTarget: "_modal",
+    //         };
 
-            cashfree.checkout(checkoutOptions).then((res) => {
-                console.log("Payment initialized");
-                // Pass doctorId to verifyPayment
-                verifyPayment(doctorId);
-            });
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    //         cashfree.checkout(checkoutOptions).then((res) => {
+    //             console.log("Payment initialized");
+    //             // Pass doctorId to verifyPayment
+    //             verifyPayment(doctorId);
+    //         });
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
-    const handleBookAppointment = (doctorId) => {
-        handleClick(doctorId); // Pass doctorId to handleClick
-    };
+    // const handleBookAppointment = (doctorId) => {
+    //     // handleClick(doctorId); // Pass doctorId to handleClick
+    //     const timeSlot = timeSlots.indexOf(selectedSlot);
+    //             // Pass doctorId to bookAppointment
+    //             dispatch(bookAppointment({ doctorId, symptoms, timeSlot, priority_score, language })).unwrap()
+    //                 .then(() => {
+    //                     alert('Appointment Query Raised successfully!');
+    //                 })
+    //                 .catch((err) => {
+    //                     alert('Failed to book appointment:', err);
+    //                 });
+    //                 setShowResults(false);
+    // };
 
 
 
@@ -368,16 +375,28 @@ const BookAppointment = () => {
                         <div className="doctor-list">
                             {availableDoctors.map((doctor) => (
                                 <div key={doctor._id} className="doctor-card">
-                                    <img src={doctor.profile_image} alt={`${doctor.name}'s profile`} className="doctor-profile-image" />
+                                    <img
+                                        src={doctor.profile_image}
+                                        alt={`${doctor.name}'s profile`}
+                                        className="doctor-profile-image"
+                                    />
                                     <h4>{doctor.name}</h4>
                                     <p><strong>Specialization:</strong> {doctor.specialist}</p>
-                                    <p><strong>Specialist Degree:</strong> {doctor.specialistDegree}</p>
-                                    <p><strong>Languages:</strong> {doctor.language.join(', ')}</p>
-                                    <p><strong>Phone:</strong> {doctor.phone}</p>
-                                    <p><strong>Years of Experience:</strong> {doctor.years_of_experience}</p>
-                                    <p><strong>Medical Registration ID:</strong> {doctor.medical_registration_id}</p>
-                                    <button onClick={() => handleBookAppointment(doctor._id)} className="book-button">Book Appointment</button>
-                                    
+                                    <p>
+                                        <strong>Rating:</strong>{' '}
+                                        {'★'.repeat(Math.floor(doctor.rating))}{' '}
+                                        {'☆'.repeat(5 - Math.floor(doctor.rating))}
+                                    </p>
+                                    <button
+                                        onClick={() =>
+                                            navigate(`/doctor/${doctor._id}`, {
+                                                state: { symptoms, language, timeSlot: timeSlots.indexOf(selectedSlot) },
+                                            })
+                                        }
+                                        className="view-profile-button"
+                                    >
+                                        View Profile
+                                    </button>
                                 </div>
                             ))}
                         </div>

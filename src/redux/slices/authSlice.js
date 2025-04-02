@@ -159,11 +159,24 @@ export const fetchAllDoctors = createAsyncThunk('doctors/fetchAllDoctors', async
   }
 });
 
+export const fetchSingleDoctor = createAsyncThunk(
+  'doctors/fetchDoctor',
+  async ({ doctorId }, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/doctors/fetchDoctorDetail', { doctorId });
+      return response.data; // Return the doctor details
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Failed to fetch doctor details');
+    }
+  }
+);
+
 const initialState = {
   user: JSON.parse(localStorage.getItem('userInfo')) || null,
   token: localStorage.getItem('token') || null,
   role: localStorage.getItem('role') || null,
   doctors : [],
+  doctor : null,
   loading: false,
   error: null,
 };
@@ -360,6 +373,20 @@ const authSlice = createSlice({
         state.doctors = action.payload.doctors;
       })
       .addCase(fetchAllDoctors.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      //fetch single doctor
+      .addCase(fetchSingleDoctor.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchSingleDoctor.fulfilled, (state, action) => {
+        state.loading = false;
+        state.doctor = action.payload.doctor;
+      })
+      .addCase(fetchSingleDoctor.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

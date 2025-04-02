@@ -1,0 +1,185 @@
+/* Container styling */
+.doctor-details-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* Profile card styling */
+.doctor-details-card {
+    text-align: center;
+    opacity: 0;
+    transform: scale(0.9);
+    animation: scaleIn 0.8s ease-out forwards;
+}
+
+.doctor-profile-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid #007bff;
+    transition: transform 0.3s ease;
+}
+
+.doctor-profile-image:hover {
+    transform: scale(1.1);
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #333333;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+}
+
+p {
+    font-size: 1rem;
+    color: #555555;
+    margin: 0.5rem 0;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.2s;
+}
+
+p strong {
+    color: #333333;
+}
+
+/* Booking form styling */
+.booking-form {
+    margin-top: 2rem;
+    text-align: left;
+    background-color: #f9f9f9;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.4s;
+}
+
+.booking-form h3 {
+    font-size: 1.5rem;
+    color: #007bff;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.6s;
+}
+
+label {
+    display: block;
+    font-size: 0.9rem;
+    color: #333333;
+    margin-bottom: 0.5rem;
+}
+
+textarea,
+select {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+textarea:focus,
+select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+textarea {
+    resize: none;
+    height: 100px;
+}
+
+/* Button styling */
+.book-button {
+    display: inline-block;
+    background-color: #007bff;
+    color: #ffffff;
+    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 1s ease-out forwards;
+    animation-delay: 0.8s;
+}
+
+.book-button:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+}
+
+/* Error message styling */
+.error {
+    color: #ff4d4d;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .doctor-details-container {
+        padding: 1rem;
+    }
+
+    .doctor-profile-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .booking-form h3 {
+        font-size: 1.3rem;
+    }
+}
