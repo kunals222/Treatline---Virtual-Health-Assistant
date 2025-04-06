@@ -14,6 +14,7 @@ import QRCode from 'qrcode';
 // import 'jspdf-autotable';
 import { fetchAppointmentDetails } from '../redux/slices/appointmentSlice';
 import logoUrl from '../assets/logo1.png'; // Adjust the path to your logo image 
+import RatingForm from './RatingForm';
 
 const DoctorDashboard = () => {
     const [activeSection, setActiveSection] = useState('scheduled');
@@ -22,6 +23,8 @@ const DoctorDashboard = () => {
     const { user, pastAppointments, currentAppointments, role, appointment } = useSelector((state) => state.auth);
     const {pastApt} = useSelector((state) => state.appointments);
     const [selectedSlots, setSelectedSlots] = useState([]);
+    const [isRatingFormOpen, setIsRatingFormOpen] = useState(false);
+    const [ratingDoctorId, setRatingDoctorId] = useState(null); // Track the doctor being rated
     
     // Prescription related state
     const [prescriptionData, setPrescriptionData] = useState({
@@ -309,8 +312,13 @@ const DoctorDashboard = () => {
     };
 
     const handleJoinMeeting = (appointmentId) => {
-        const meetingUrl = `https://treatline.duckdns.org/${appointmentId}`;
+        const meetingUrl = `https://treatline-meeting-room.duckdns.org/${appointmentId}`;
         window.open(meetingUrl, '_blank');
+    };
+
+    const handleRatingSubmit = (data) => {
+        console.log('Rating submitted:', data);
+        toast.success('Thank you for your feedback!');
     };
 
     return (
@@ -393,10 +401,28 @@ const DoctorDashboard = () => {
                                     </tbody>
                                 </table>
                             </div>
-                            <button className="join-meeting-button" onClick={() => handleJoinMeeting(appointment._id)}>Join Meeting</button>
+                            <div className="appointment-actions">
+                                <button className="join-meeting-button" onClick={() => handleJoinMeeting(appointment._id)}>
+                                    Join Meeting
+                                </button>
+                                <button
+                                    className="rate-doctor-button"
+                                    onClick={() => {
+                                        setRatingDoctorId(appointment.doctorId);
+                                        setIsRatingFormOpen(true);
+                                    }}
+                                >
+                                    Rate Doctor
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
+                <RatingForm
+                    isOpen={isRatingFormOpen}
+                    onClose={() => setIsRatingFormOpen(false)}
+                    doctorId={ratingDoctorId}
+                />
                 {role === 'doctor' && activeSection === 'history' && (
                     <table className="history-table">
                         <thead>
@@ -521,9 +547,9 @@ const DoctorDashboard = () => {
                             className="feedback-textarea"
                         />
                         <button onClick={handleFeedbackSubmit} className="submit-feedback-button">Submit Feedback</button>
-                    </div>
+                                            </div>
                 )}
-               
+                               
                 {showPrescriptionModal && (
                     <div className="modal-overlay">
                         <div className="prescription-modal">

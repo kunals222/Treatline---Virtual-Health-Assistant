@@ -171,6 +171,18 @@ export const fetchSingleDoctor = createAsyncThunk(
   }
 );
 
+export const updateDoctorRating = createAsyncThunk(
+  'doctors/updateDoctorRating',
+  async ({ doctorId, userRating, feedback }, { rejectWithValue }) => {
+    try {
+      const response = await api.put('/doctors/updateRating', { doctorId, userRating, feedback });
+      return response.data; // Return the updated doctor data or success message
+    } catch (err) {
+      return rejectWithValue(err.response?.data || 'Failed to update doctor rating');
+    }
+  }
+);
+
 const initialState = {
   user: JSON.parse(localStorage.getItem('userInfo')) || null,
   token: localStorage.getItem('token') || null,
@@ -387,6 +399,20 @@ const authSlice = createSlice({
         state.doctor = action.payload.doctor;
       })
       .addCase(fetchSingleDoctor.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      // Update Doctor Rating
+      .addCase(updateDoctorRating.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateDoctorRating.fulfilled, (state, action) => {
+        state.loading = false;
+        // Optionally update the doctor data in the state if needed
+      })
+      .addCase(updateDoctorRating.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

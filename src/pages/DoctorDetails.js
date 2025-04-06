@@ -99,14 +99,30 @@ const DoctorDetails = () => {
                                 className="w-full p-2 border border-gray-300 rounded"
                             >
                                 <option value="">Select Time Slot</option>
-                                { doctor.time_slot[0] === 1 ? <option value="0">0:00 - 3:00</option> : null }
-                                { doctor.time_slot[1] === 1 ? <option value="1">3:00 - 6:00</option> : null }
-                                { doctor.time_slot[2] === 1 ? <option value="2">6:00 - 9:00</option> : null }
-                                { doctor.time_slot[3] === 1 ? <option value="3">9:00 - 12:00</option> : null }
-                                { doctor.time_slot[4] === 1 ? <option value="4">12:00 - 15:00</option> : null }
-                                { doctor.time_slot[5] === 1 ? <option value="5">15:00 - 18:00</option> : null }
-                                { doctor.time_slot[6] === 1 ? <option value="6">18:00 - 21:00</option> : null }
-                                { doctor.time_slot[7] === 1 ? <option value="7">21:00 - 24:00</option> : null }
+                                {doctor.time_slot[0] === 1 && new Date().getTime() < new Date().setHours(2, 30, 0, 0) ? (
+                                    <option value="0">0:00 - 3:00</option>
+                                ) : null}
+                                {doctor.time_slot[1] === 1 && new Date().getTime() < new Date().setHours(5, 30, 0, 0) ? (
+                                    <option value="1">3:00 - 6:00</option>
+                                ) : null}
+                                {doctor.time_slot[2] === 1 && new Date().getTime() < new Date().setHours(8, 30, 0, 0) ? (
+                                    <option value="2">6:00 - 9:00</option>
+                                ) : null}
+                                {doctor.time_slot[3] === 1 && new Date().getTime() < new Date().setHours(11, 30, 0, 0) ? (
+                                    <option value="3">9:00 - 12:00</option>
+                                ) : null}
+                                {doctor.time_slot[4] === 1 && new Date().getTime() < new Date().setHours(14, 30, 0, 0) ? (
+                                    <option value="4">12:00 - 15:00</option>
+                                ) : null}
+                                {doctor.time_slot[5] === 1 && new Date().getTime() < new Date().setHours(17, 30, 0, 0) ? (
+                                    <option value="5">15:00 - 18:00</option>
+                                ) : null}
+                                {doctor.time_slot[6] === 1 && new Date().getTime() < new Date().setHours(20, 30, 0, 0) ? (
+                                    <option value="6">18:00 - 21:00</option>
+                                ) : null}
+                                {doctor.time_slot[7] === 1 && new Date().getTime() < new Date().setHours(23, 30, 0, 0) ? (
+                                    <option value="7">21:00 - 24:00</option>
+                                ) : null}
                             </select>
                         </div>
                         <div className="form-group">

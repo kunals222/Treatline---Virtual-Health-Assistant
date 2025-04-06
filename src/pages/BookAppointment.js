@@ -126,7 +126,9 @@ const symptomsList = [
          "पेट दर्द", "अचानक वजन घटना", "पसीना आना", "सूजन आना", "लसिका ग्रंथियों की सूजन", 
          "झुनझुनी महसूस होना", "दांत दर्द", "कांपना", "लड़खड़ाकर चलना", "मूत्र संक्रमण", "चक्कर आना", 
          "उल्टी आना", "आंसू बहना", "कमजोरी", "वजन बढ़ना", "घरघराहट" , "पेट में दर्द", "दाने",
-    "तेज बुखार", "खांसी", "गले में खराश", "सिरदर्द", "कमजोरी", "सांस लेने में दिक्कत",
+    "तेज बुखार", "खांसी", "गले में खराश", "सिरदर्द", "कमजोरी", "सांस लेने में दिक्कत", 
+    "पेट में ऐंठन", "बदहज़मी", "उल्टी", "दस्त", "छाती में दर्द", "पेशाब में जलन",
+    "पेशाब में खून", "गर्दन में दर्द", "कमर में दर्द", "घुटने में दर्द", "हाथों में सुन्नपन",
 ];
 
 
@@ -341,9 +343,16 @@ const BookAppointment = () => {
                             className="w-full p-2 border border-gray-300 rounded"
                         >
                             <option value="">Select Time Slot</option>
-                            {timeSlots.map((slot, index) => (
-                                <option key={index} value={slot}>{slot}</option>
-                            ))}
+                            {timeSlots.map((slot, index) => {
+                                const [startHour, endHour] = slot.split(' - ').map((time) => parseInt(time.split(':')[0], 10));
+                                const currentTime = new Date();
+                                const endTime = new Date();
+                                endTime.setHours(endHour === 0 ? 24 : endHour, 30, 0, 0); // Set end time with 30 minutes buffer
+
+                                return currentTime.getTime() < endTime.getTime() ? (
+                                    <option key={index} value={slot}>{slot}</option>
+                                ) : null;
+                            })}
                         </select>
                     </div>
                     <div className="form-group">
