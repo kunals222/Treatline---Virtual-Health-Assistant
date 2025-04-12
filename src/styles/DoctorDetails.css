@@ -10,28 +10,67 @@
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 0.8s ease-out forwards;
+    overflow: hidden; /* Prevent content overflow */
+    word-wrap: break-word; /* Ensure long words break properly */
+    box-sizing: border-box; /* Include padding and border in width/height */
 }
 
-/* Profile card styling */
+/* Doctor details card styling */
 .doctor-details-card {
-    text-align: center;
-    opacity: 0;
-    transform: scale(0.9);
-    animation: scaleIn 0.8s ease-out forwards;
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping for smaller screens */
+    align-items: flex-start;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin: 20px 0;
+    font-family: 'Arial', sans-serif;
+    gap: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden; /* Prevent content overflow */
 }
 
+.doctor-details-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Profile image styling */
 .doctor-profile-image {
     width: 150px;
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    margin-bottom: 1rem;
-    border: 3px solid #007bff;
+    border: 4px solid #007bff;
     transition: transform 0.3s ease;
+    flex-shrink: 0; /* Prevent image from shrinking */
 }
 
 .doctor-profile-image:hover {
     transform: scale(1.1);
+}
+
+/* Doctor details content */
+.doctor-details-card h2 {
+    font-size: 1.8rem;
+    color: #333333;
+    margin-bottom: 10px;
+    font-weight: bold;
+    word-wrap: break-word; /* Ensure long names break properly */
+}
+
+.doctor-details-card p {
+    font-size: 1rem;
+    color: #555555;
+    margin: 5px 0;
+    line-height: 1.5;
+    word-wrap: break-word; /* Ensure long text breaks properly */
+}
+
+.doctor-details-card p strong {
+    color: #007bff;
+    font-weight: bold;
 }
 
 h2 {
@@ -141,6 +180,36 @@ textarea {
     margin-top: 1rem;
 }
 
+/* Suggestions dropdown styling */
+.suggestions-dropdown {
+    position: absolute;
+    z-index: 10;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.suggestions-dropdown li {
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.suggestions-dropdown li:hover,
+.suggestions-dropdown li.focused {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+/* Adjustments for form-group relative positioning */
+.form-group.relative {
+    position: relative;
+}
+
 /* Animations */
 @keyframes fadeIn {
     from {
@@ -164,6 +233,49 @@ textarea {
     }
 }
 
+/* Basic info styling */
+.doctor-basic-info {
+    margin-top: 6%;
+    margin-left: 6%;
+}
+
+.doctor-basic-info h2 {
+    font-size: 2rem;
+    color: #333333;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.doctor-basic-info .doctor-email {
+    font-size: 1rem;
+    color: #555555;
+    margin-bottom: 20px;
+}
+
+/* Table styling */
+.doctor-details-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.doctor-details-table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    color: #555555;
+}
+
+.doctor-details-table td:first-child {
+    font-weight: bold;
+    color: #007bff;
+    width: 40%;
+}
+
+.doctor-details-table td:last-child {
+    text-align: left;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
     .doctor-details-container {
@@ -181,5 +293,36 @@ textarea {
 
     .booking-form h3 {
         font-size: 1.3rem;
+    }
+
+    .doctor-details-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .doctor-profile-image {
+        width: 120px;
+        height: 120px;
+    }
+
+    .doctor-details-card h2 {
+        font-size: 1.5rem;
+    }
+
+    .doctor-details-card p {
+        font-size: 0.9rem;
+    }
+
+    .doctor-basic-info h2 {
+        font-size: 1.5rem;
+    }
+
+    .doctor-basic-info .doctor-email {
+        font-size: 0.9rem;
+    }
+
+    .doctor-details-table td {
+        font-size: 0.9rem;
     }
 }

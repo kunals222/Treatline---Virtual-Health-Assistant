@@ -322,9 +322,7 @@ const BookAppointment = () => {
                                     <li
                                         key={index}
                                         onClick={() => handleSelect(symptom)}
-                                        className={`p-2 cursor-pointer ${
-                                            index === focusedIndex ? 'bg-gray-200' : ''
-                                        }`}
+                                        className={`p-2 cursor-pointer ${index === focusedIndex ? 'focused' : ''}`}
                                     >
                                         {symptom}
                                     </li>

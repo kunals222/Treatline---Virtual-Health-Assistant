@@ -178,3 +178,9 @@
 .suggestions-dropdown::-webkit-scrollbar-thumb:hover {
     background-color: #aaa; /* Darker scrollbar thumb on hover */
 }
+
+.suggestions-dropdown li:hover,
+.suggestions-dropdown li.focused {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
