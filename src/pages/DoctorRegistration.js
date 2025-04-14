@@ -5,8 +5,8 @@ import { registerUser } from '../redux/slices/authSlice';
 import '../styles/DoctorRegistration.css';
 import logo from '../assets/logo1.png';
 import Footer from '../components/Footer';
-import axios from 'axios';
-import { load } from '@cashfreepayments/cashfree-js'
+// import axios from 'axios';
+// import { load } from '@cashfreepayments/cashfree-js'
 
 
 const specialists = [

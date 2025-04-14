@@ -316,10 +316,20 @@ const DoctorDashboard = () => {
         window.open(meetingUrl, '_blank');
     };
 
-    const handleRatingSubmit = (data) => {
-        console.log('Rating submitted:', data);
-        toast.success('Thank you for your feedback!');
+    const formatTime = (date) => {
+        const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+        return new Date(date).toLocaleTimeString([], options);
     };
+
+    const isMeetingActive = (start, end) => {
+        const now = new Date();
+        return now >= new Date(start) && now <= new Date(end);
+    };
+
+    // const handleRatingSubmit = (data) => {
+    //     console.log('Rating submitted:', data);
+    //     toast.success('Thank you for your feedback!');
+    // };
 
     return (
         <div className="dashboard">
@@ -368,11 +378,21 @@ const DoctorDashboard = () => {
                                     </table>
                                 </div>
                                 <div className="appointment-actions">
-                                    <button className="join-meeting-button" onClick={() => handleJoinMeeting(appt._id)}>
-                                        <span className="button-icon"></span> Join Meeting
+                                    <button
+                                        className="join-meeting-button"
+                                        onClick={() => handleJoinMeeting(appt._id)}
+                                        disabled={!isMeetingActive(appt.start, appt.end)} // Disable button if not in time range
+                                        style={{
+                                            backgroundColor: isMeetingActive(appt.start, appt.end) ? '#007bff' : '#ccc' ,
+                                            cursor: isMeetingActive(appt.start, appt.end) ? 'pointer' : 'not-allowed',
+                                        }}
+                                    >
+                                        {isMeetingActive(appt.start, appt.end)
+                                            ? 'Join Meeting'
+                                            : `Join at ${formatTime(appt.start)}`}
                                     </button>
                                     <button className="write-prescription-button" onClick={() => openPrescriptionModal(appt)}>
-                                        <span className="button-icon"></span> Write Prescription
+                                        Write Prescription
                                     </button>
                                 </div>
                             </div>
@@ -402,8 +422,18 @@ const DoctorDashboard = () => {
                                 </table>
                             </div>
                             <div className="appointment-actions">
-                                <button className="join-meeting-button" onClick={() => handleJoinMeeting(appointment._id)}>
-                                    Join Meeting
+                                <button
+                                    className="join-meeting-button"
+                                    onClick={() => handleJoinMeeting(appointment._id)}
+                                    disabled={!isMeetingActive(appointment.start, appointment.end)} // Disable button if not in time range
+                                    style={{
+                                        backgroundColor: isMeetingActive(appointment.start, appointment.end) ? '#007bff' : '#ccc',
+                                        cursor: isMeetingActive(appointment.start, appointment.end) ? 'pointer' : 'not-allowed',
+                                    }}
+                                >
+                                    {isMeetingActive(appointment.start, appointment.end)
+                                        ? 'Join Meeting'
+                                        : `Join at ${formatTime(appointment.start)}`}
                                 </button>
                                 <button
                                     className="rate-doctor-button"
