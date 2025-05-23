@@ -312,7 +312,7 @@ const DoctorDashboard = () => {
     };
 
     const handleJoinMeeting = (appointmentId) => {
-        const meetingUrl = `https://treatline-meeting-room.duckdns.org/${appointmentId}`;
+        const meetingUrl = `https://treatline.duckdns.org/${appointmentId}`;
         window.open(meetingUrl, '_blank');
     };
 
